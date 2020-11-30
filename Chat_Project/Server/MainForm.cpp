@@ -113,7 +113,7 @@ System::Void MainForm::backgroundWorker1_DoWork(System::Object^ sender, System::
 void MainForm::AddTextToContent(String^ text)
 {
 	txtClientChatBox->AppendText(text);
-	txtClientChatBox->AppendText("\n");
+	txtClientChatBox->AppendText("\r\n");
 }
 
 void MainForm::UpdateConnectedClient(List<String^>^ lstClient) //
@@ -122,7 +122,7 @@ void MainForm::UpdateConnectedClient(List<String^>^ lstClient) //
 	for each (String ^ user in lstClient)
 	{
 		txtConnected->AppendText(user);
-		txtConnected->AppendText("\n");
+		txtConnected->AppendText("\r\n");
 	}
 }
 

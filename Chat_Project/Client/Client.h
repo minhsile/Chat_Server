@@ -23,7 +23,5 @@ public:
 	int connectToServer(String^ _ServerIPAddr, int _ServerPort);
 	int sendMessage(array<Byte>^ buff);
 	int sendMessage(array<Byte>^ buff, int size);
-	void OnReceive(IAsyncResult^ ar);
-	void OnSend(IAsyncResult^ ar);
 };
 

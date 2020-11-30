@@ -4,8 +4,8 @@
 
 ServerController::ServerController()
 {
-	serverIPAddr = "127.0.0.1";
-	serverPort = 2015;
+	serverIPAddr = "192.168.0.100";
+	serverPort = 2020;
 
 	createSocket();
 }

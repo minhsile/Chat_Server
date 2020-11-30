@@ -6,10 +6,10 @@
 ref class AppController;
 
 
-
 #include "LoginForm.h"
 #include "MainForm.h"
 #include "ChatForm.h"
+#include "ConnectServer.h"
 //Singleton pattern
 
 using namespace System::Threading;
@@ -24,6 +24,7 @@ public:
 	static Client::PrivateChat^ tempPrvChat;
 	~AppController();
 	AppSocket^ appSocket;
+	Client::ConnectServer^ connectServer = nullptr;
 	Client::LoginScreen^ loginScreen = nullptr;
 	Client::MainScreen^ mainScreen = nullptr;
 	List<Client::PrivateChat^>^ lstPrivateChatForm = gcnew List<Client::PrivateChat^>();

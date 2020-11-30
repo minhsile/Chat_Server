@@ -12,10 +12,10 @@ System::Void LoginScreen::butSignup_Click(System::Object^ sender, System::EventA
 	AppController::getObject()->signup(username, password);
 }
 System::Void LoginScreen::LoginScreen_Load(System::Object^ sender, System::EventArgs^ e) {
-	if (AppController::getObject()->appSocket->connectToServer() != 0) //Connect to server
-	{
-		Application::Exit(); //Exit app
-	}
+	//if (AppController::getObject()->appSocket->connectToServer() != 0) //Connect to server
+	//{
+	//	Application::Exit(); //Exit app
+	//}
 
 	AppController::getObject()->createThreadListenMessageFromServer();
 }

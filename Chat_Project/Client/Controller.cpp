@@ -46,7 +46,7 @@ System::Void AppController::ListenMessage()
 		switch (msgReceived->messageType)
 		{
 		case ChatStruct::MessageType::Login:
-			MessageBox::Show("Login Message?");
+			//MessageBox::Show("Login Message?");
 			break;
 		case ChatStruct::MessageType::ResponseLogin:
 		{
@@ -66,13 +66,6 @@ System::Void AppController::ListenMessage()
 
 			break;
 		}
-		//case ChatStruct::MessageType::PublicMessage:
-		//{
-		//	PublicMessageStruct^ publicMessageStruct = (PublicMessageStruct^)msgReceived;
-		//	AppController::getObject()->mainScreen->AddTextToContent(publicMessageStruct->strMessage);
-
-		//	break;
-		//}
 		case ChatStruct::MessageType::PrivateMessage:
 		{
 			PrivateMessageStruct^ privateMsgStruct = (PrivateMessageStruct^)msgReceived;

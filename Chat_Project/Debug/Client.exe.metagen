@@ -1,3 +1,4 @@
+  Client.ConnectServer.resources - Embedded, ContainedInManifestFile, 
 ImageRuntimeVersion: v4.0.30319
 Assembly Client, Version=1.0.*, Culture=Invariant Language (Invariant Country): 
 	hash=SHA1, flags=PublicKey
@@ -41,3 +42,6 @@ Class Client.PrivateChat: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
     SetCaption(String): PrivateScope, Public, HideBySig
     AddTextToDisplayChatbox(String): PrivateScope, Public, HideBySig
     ThreadChooseFile(): PrivateScope, Public, HideBySig
+Class Client.ConnectServer: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName

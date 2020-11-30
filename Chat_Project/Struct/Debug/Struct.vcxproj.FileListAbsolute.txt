@@ -1,1 +1,2 @@
 C:\Users\IBM\Desktop\Chat_Project\Struct\Debug\Struct.vcxprojAssemblyReference.cache
+C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Struct\Debug\Struct.vcxprojAssemblyReference.cache

@@ -4,22 +4,22 @@
 
 AppSocket::AppSocket()
 {
-	serverIPAddr = "127.0.0.1"; //Localhost IP
-	serverPort = 2015; //Default server Port
-
-	createSocket(); //Create a socket
+	serverIPAddr = "192.168.0.100";
+	serverPort = 2020; 
+	createSocket(); 
 }
 
 AppSocket::AppSocket(String^ _ServerIPAddr, int _ServerPort)
 {
 	serverIPAddr = _ServerIPAddr;
 	serverPort = _ServerPort;
+	createSocket();
 }
 
 int AppSocket::createSocket()
 {
-	clientSocket = gcnew Socket(AddressFamily::InterNetwork,
-		SocketType::Stream, ProtocolType::Tcp);
+	if (clientSocket == nullptr)
+		clientSocket = gcnew Socket(AddressFamily::InterNetwork,SocketType::Stream, ProtocolType::Tcp);
 
 	return 0;
 }
@@ -61,14 +61,4 @@ int AppSocket::sendMessage(array<Byte>^ buff)
 int AppSocket::sendMessage(array<Byte>^ buff, int size)
 {
 	return clientSocket->Send(buff, size, SocketFlags::None); //Sent bytes
-}
-
-void AppSocket::OnReceive(IAsyncResult^ ar)
-{
-
-}
-
-void AppSocket::OnSend(IAsyncResult^ ar)
-{
-
 }
