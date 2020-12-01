@@ -144,18 +144,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AllStruct.h" />
+    <ClInclude Include="ChangePassword.h" />
     <ClInclude Include="ChatStruct.h" />
     <ClInclude Include="Control.h" />
     <ClInclude Include="Form1.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Login.h" />
+    <ClInclude Include="LoginNotification.h" />
+    <ClInclude Include="LogoutNotification.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PrivateChat.h" />
     <ClInclude Include="PrivateFile.h" />
     <ClInclude Include="RequestSendFile.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResponseChangePassword.h" />
     <ClInclude Include="ResponseLogin.h" />
+    <ClInclude Include="ResponseSendFile.h" />
     <ClInclude Include="ResponseSignup.h" />
     <ClInclude Include="Signup.h" />
     <ClInclude Include="UserStatus.h" />

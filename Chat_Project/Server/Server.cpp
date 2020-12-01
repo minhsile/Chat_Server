@@ -120,7 +120,31 @@ bool ServerController::checkSignup(String^ _Username, String^ _Password, String^
 
 	return true;
 }
+bool ServerController::checkChangePass(String^ _Username, String^ _Password, String^& errorMsg)
+{
+	//Check for blank!
+	if (String::IsNullOrEmpty(_Username) || String::IsNullOrEmpty(_Password))
+	{
+		errorMsg = "Username or Password can't be blank!";
+		return false;
+	}
 
+	//Check for special characters
+	//String^ lstSpecialCharacters = "|"
+	if (_Username->Contains("|") || _Username->Contains("|"))
+	{
+		errorMsg = "Username or password can't contain special characters!";
+		return false;
+	}
+
+	//Check account in database
+	if (!checkAccount(_Username, _Password))
+	{
+		errorMsg = "Username or Password is not correct!";
+		return false;
+	}
+	return true;
+}
 bool ServerController::checkAccountExists(String^ _Username)
 {
 	array<String^>^ lines = System::IO::File::ReadAllLines(accountPath);
@@ -160,7 +184,7 @@ bool ServerController::login(String^ _UserName, String^ _Password, Socket^ _Clie
 		mainForm->AddTextToContent(_UserName + " hast just online!");
 		loginResponse(true, errorMsg, _ClientSocket);
 		mainForm->UpdateConnectedClient(getListClient());
-		//sendLoginNotification(_UserName, _ClientSocket);
+		sendLoginNotification(_UserName, _ClientSocket);
 
 		return true; //Login successs
 	}
@@ -205,6 +229,71 @@ void ServerController::signupResponse(bool _IsSucc, String^ errorMsg, Socket^ _C
 	_ClientSocket->Send(buff); //Send the result to client.
 }
 
+bool ServerController::changePassword(String^ Username, String^ oldPassword, String^ newPassword, Socket^ _ClientSocket)
+{
+	String^ errorMsg = "";
+	if (checkChangePass(Username, oldPassword, errorMsg))
+	{
+		array<String^>^ lines = System::IO::File::ReadAllLines(accountPath);
+		for each (String ^ line in lines)
+		{
+			//MessageBox::Show(line);
+			if (line == Username + "|" + oldPassword)
+			{
+				line->Replace(Username + "|" + oldPassword, Username + "|" + newPassword);
+				break;
+			}
+		}
+		changePassResponse(true, errorMsg, _ClientSocket);
+		return true; 
+	}
+	changePassResponse(false, errorMsg, _ClientSocket);
+	return false; //Error 
+}
+void ServerController::changePassResponse(bool _IsSucc, String^ errorMsg, Socket^ _ClientSocket)
+{
+	ResponseChangePasswordStruct^ resChangePass = gcnew ResponseChangePasswordStruct;
+	resChangePass->IsSucc = _IsSucc;
+	resChangePass->errorMsg = errorMsg;
+	array<Byte>^ buff = resChangePass->pack();
+
+	_ClientSocket->Send(buff); //Send the result to client.
+}
+
+void ServerController::sendLoginNotification(String^ _Username, Socket^ _ClientSocket)
+{
+	LoginNotificationStruct^ loginNoti = gcnew LoginNotificationStruct;
+	loginNoti->strUsername = _Username;
+	array<Byte>^ buff = loginNoti->pack();
+
+	for each (ClientInfo ^ clientInfo in lstClientInfo)
+	{
+		if (clientInfo->clientSocket != _ClientSocket) //Send the others login notication
+		{
+			clientInfo->clientSocket->Send(buff);
+		}
+	}
+}
+
+void ServerController::sendLogoutNotification(Socket^ _ClientSocket)
+{
+	String^ clientUsername = getUsernameBySocket(_ClientSocket);
+	LogoutNotificationStruct^ logoutNoti = gcnew LogoutNotificationStruct;
+	logoutNoti->strUsername = clientUsername;
+	array<Byte>^ buff = logoutNoti->pack();
+
+	mainForm->AddTextToContent(clientUsername + " hast just offline!");
+	removeClientInfoByUsername(clientUsername);
+	mainForm->UpdateConnectedClient(getListClient()); //Update list connected
+
+	for each (ClientInfo ^ clientInfo in lstClientInfo)
+	{
+		if (clientInfo->clientSocket != _ClientSocket) //Send the others logout notication
+		{
+			clientInfo->clientSocket->Send(buff);
+		}
+	}
+}
 void ServerController::userStatusResponse(Socket^ _ClientSocket)
 {
 	UserStatusStruct^ userStatusStruct = gcnew UserStatusStruct;
@@ -287,17 +376,17 @@ void ServerController::requestSendFile(String^ _ToUsername, String^ _FileName, i
 	receiver->Send(byteData);
 }
 
-//void ServerController::responseSendFile(String^ _ToUsername, bool _IsAccept, Socket^ _ClientSocket)
-//{
-//	String^ sender = getUsernameBySocket(_ClientSocket);
-//	ResponseSendFileStruct^ rpSendFileStruct = gcnew ResponseSendFileStruct;
-//	rpSendFileStruct->strUsername = sender;
-//	rpSendFileStruct->IsAccept = _IsAccept;
-//
-//	Socket^ receiver = getSocketByUsername(_ToUsername);
-//	array<Byte>^ byteData = rpSendFileStruct->pack();
-//	receiver->Send(byteData);
-//}
+void ServerController::responseSendFile(String^ _ToUsername, bool _IsAccept, Socket^ _ClientSocket)
+{
+	String^ sender = getUsernameBySocket(_ClientSocket);
+	ResponseSendFileStruct^ rpSendFileStruct = gcnew ResponseSendFileStruct;
+	rpSendFileStruct->strUsername = sender;
+	rpSendFileStruct->IsAccept = _IsAccept;
+
+	Socket^ receiver = getSocketByUsername(_ToUsername);
+	array<Byte>^ byteData = rpSendFileStruct->pack();
+	receiver->Send(byteData);
+}
 
 void ServerController::sendPrivateFilePackage(String^ _ToUsername, String^ _Filename, int _iPackageNumber, int _TotalPackage, array<Byte>^ _bData, Socket^ _ClientSocket)
 {

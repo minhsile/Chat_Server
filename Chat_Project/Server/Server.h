@@ -48,6 +48,7 @@ public:
 	bool checkLogin(String^ _Username, String^ _Password, String^& errorMsg);
 	bool checkAccount(String^ _Username, String^ _Password);
 	bool checkSignup(String^ _Username, String^ _Password, String^& errorMsg);
+	bool checkChangePass(String^ _Username, String^ _Password, String^& errorMsg);
 	bool checkAccountExists(String^ _Username);
 	bool addAnAccountToDatabase(String^ _Username, String^ _Password);
 
@@ -56,11 +57,13 @@ public:
 	void loginResponse(bool _IsSucc, String^ errorMsg, Socket^ _ClientSocket);
 	bool signup(String^ _Username, String^ _Password, Socket^ _ClientSocket);
 	void signupResponse(bool _IsSucc, String^ errorMsg, Socket^ _ClientSocket);
+	bool changePassword(String^ Username, String^ oldPassword, String^ newPassword, Socket^ _ClientSocket);
+	void changePassResponse(bool _IsSucc, String^ errorMsg, Socket^ _ClientSocket);
 	void userStatusResponse(Socket^ _ClientSocket);
-	//void sendLoginNotification(String^ _Username, Socket^ _ClientSocket);
-	//void sendLogoutNotification(Socket^ _ClientSocket);
+	void sendLoginNotification(String^ _Username, Socket^ _ClientSocket);
+	void sendLogoutNotification(Socket^ _ClientSocket);
 	void requestSendFile(String^ _ToUsername, String^ _FileName, int _iFileSize, Socket^ _ClientSocket);
-	//void responseSendFile(String^ _ToUsername, bool _IsAccept, Socket^ _ClientSocket);
+	void responseSendFile(String^ _ToUsername, bool _IsAccept, Socket^ _ClientSocket);
 	void sendPrivateFilePackage(String^ _ToUsername, String^ _Filename, int _iPackageNumber, int _TotalPackage, array<Byte>^ _bData, Socket^ _ClientSocket);
 
 	//int sendPublicMsgToClients(String^ _strMessage, Socket^ _ClientSocket);

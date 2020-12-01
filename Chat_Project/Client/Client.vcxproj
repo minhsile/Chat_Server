@@ -143,6 +143,9 @@
     <ResourceCompile Include="app.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChangePasswordForm.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Client.h" />
     <ClInclude Include="ConnectServer.h">
       <FileType>CppForm</FileType>
@@ -162,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="ChangePasswordForm.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ConnectServer.cpp" />
     <ClCompile Include="Controller.cpp" />
@@ -187,8 +191,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ChangePasswordForm.resx">
+      <DependentUpon>ChangePasswordForm.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConnectServer.resx">
       <DependentUpon>ConnectServer.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

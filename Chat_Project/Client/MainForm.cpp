@@ -13,22 +13,12 @@ System::Void MainScreen::MainScreen_Load(System::Object^ sender, System::EventAr
 	//UpdateOnlineUsers();
 }
 
-System::Void MainScreen::butSend_Click(System::Object^ sender, System::EventArgs^ e)
-{
-	//AppController::getObject()->sendPublicMessage(txtMessage->Text);
-	txtMessage->Text = nullptr;
-}
 
 System::Void MainScreen::MainScreen_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e)
 {
-	//AppController::getObject()->logout(); //Logout from server before exit
+	AppController::getObject()->logout(); //Logout from server before exit
 }
 
-void MainScreen::AddTextToContent(String^ text)
-{
-	DisplayChatBox->AppendText(text);
-	DisplayChatBox->AppendText("\n");
-}
 
 void MainScreen::UpdateOnlineUsers()
 {
@@ -89,4 +79,10 @@ System::Void MainScreen::butDisconnect_Click(System::Object^ sender, System::Eve
 System::Void MainScreen::MainScreen_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e)
 {
 	Application::Exit();
+}
+
+System::Void MainScreen::butChangePass_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	AppController::getObject()->changePasswordScreen = gcnew Client::ChangePasswordScreen;
+	AppController::getObject()->changePasswordScreen->ShowDialog();
 }

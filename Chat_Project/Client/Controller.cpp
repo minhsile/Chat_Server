@@ -39,10 +39,10 @@ System::Void AppController::ListenMessage()
 			MessageBox::Show("Server has just disconnected!");
 			AppController::getObject()->appSocket->clientSocket = nullptr;
 			Application::Exit();
+			break;
 		}
 
 		ChatStruct^ msgReceived = ChatControl::unpack(buff);
-		//MessageBox::Show("Client Received " + revc + " bytes");
 		switch (msgReceived->messageType)
 		{
 		case ChatStruct::MessageType::Login:
@@ -62,6 +62,28 @@ System::Void AppController::ListenMessage()
 			else
 			{
 				MessageBox::Show(resLoginStruct->errorMsg);
+			}
+
+			break;
+		}
+		case ChatStruct::MessageType::ChangePassword:
+			//MessageBox::Show("Login Message?");
+			break;
+		case ChatStruct::MessageType::ResponseChangePassword:
+		{
+			ResponseChangePasswordStruct^ resChangepassStruct = (ResponseChangePasswordStruct^)msgReceived;
+			if (resChangepassStruct->IsSucc)
+			{
+				MessageBox::Show("Password changed successfully!");
+				AppController::getObject()->changePasswordScreen->Hide();
+				//Create new form
+				AppController::getObject()->mainScreen = gcnew Client::MainScreen;
+				//AppController::getObject()->mainScreen->Show();
+				//Application::Run(AppController::getObject()->mainScreen);
+			}
+			else
+			{
+				MessageBox::Show(resChangepassStruct->errorMsg);
 			}
 
 			break;
@@ -97,63 +119,63 @@ System::Void AppController::ListenMessage()
 			AppController::getObject()->mainScreen->SetOnlineUsers(userStaStruct->lstOnlineUsers);
 			break;
 		}
-		//case ChatStruct::MessageType::LoginNotification:
-		//{
-		//	LoginNotificationStruct^ logNoti = (LoginNotificationStruct^)msgReceived;
-		//	AppController::getObject()->mainScreen->AddTextToContent(logNoti->strUsername + " has just online!");
-		//	AppController::getObject()->mainScreen->AddAnOnlineUser(logNoti->strUsername);
-		//	break;
-		//}
-		//case ChatStruct::MessageType::LogoutNotification:
-		//{
-		//	LogoutNotificationStruct^ logOut = (LogoutNotificationStruct^)msgReceived;
-		//	//MessageBox::Show("sax");
-		//	//MessageBox::Show("Username: " + logOut->strUsername);
-		//	AppController::getObject()->mainScreen->AddTextToContent(logOut->strUsername + " has just offline!");
-		//	AppController::getObject()->mainScreen->DeleteAnOnlineUser(logOut->strUsername);
-		//	break;
-		//}
-		//case ChatStruct::MessageType::RequestSendFile:
-		//{
-		//	RequestSendFileStruct^ rqSendFileStruct = (RequestSendFileStruct^)msgReceived;
-		//	if (MessageBox::Show(rqSendFileStruct->strUsername + " want to send you a file " +
-		//		rqSendFileStruct->strFileName + " (" + Convert::ToString(rqSendFileStruct->iFileSize) +
-		//		" bytes).\nDo you want to receive?", "Receive a file", MessageBoxButtons::YesNo) == DialogResult::Yes)
-		//	{
-		//		AppController::getObject()->responseSendFile(rqSendFileStruct->strUsername, true);
-		//	}
-		//	else
-		//	{
-		//		AppController::getObject()->responseSendFile(rqSendFileStruct->strUsername, false);
-		//	}
-		//	break;
+		case ChatStruct::MessageType::LoginNotification:
+		{
+			LoginNotificationStruct^ logNoti = (LoginNotificationStruct^)msgReceived;
+			//AppController::getObject()->mainScreen->AddTextToContent(logNoti->strUsername + " has just online!");
+			AppController::getObject()->mainScreen->AddAnOnlineUser(logNoti->strUsername);
+			break;
+		}
+		case ChatStruct::MessageType::LogoutNotification:
+		{
+			LogoutNotificationStruct^ logOut = (LogoutNotificationStruct^)msgReceived;
+			//MessageBox::Show("sax");
+			//MessageBox::Show("Username: " + logOut->strUsername);
+			//AppController::getObject()->mainScreen->AddTextToContent(logOut->strUsername + " has just offline!");
+			AppController::getObject()->mainScreen->DeleteAnOnlineUser(logOut->strUsername);
+			break;
+		}
+		case ChatStruct::MessageType::RequestSendFile:
+		{
+			RequestSendFileStruct^ rqSendFileStruct = (RequestSendFileStruct^)msgReceived;
+			if (MessageBox::Show(rqSendFileStruct->strUsername + " want to send you a file " +
+				rqSendFileStruct->strFileName + " (" + Convert::ToString(rqSendFileStruct->iFileSize) +
+				" bytes).\nDo you want to receive?", "Receive a file", MessageBoxButtons::YesNo) == DialogResult::Yes)
+			{
+				AppController::getObject()->responseSendFile(rqSendFileStruct->strUsername, true);
+			}
+			else
+			{
+				AppController::getObject()->responseSendFile(rqSendFileStruct->strUsername, false);
+			}
+			break;
 
-		//}
-		//case ChatStruct::MessageType::ResponseSendFile:
-		//{
-		//	ResponseSendFileStruct^ rpSendFileStruct = (ResponseSendFileStruct^)msgReceived;
-		//	Client::PrivateChat^ prvChat = getPrivateChatFormByFriendUsername(rpSendFileStruct->strUsername);
-		//	if (rpSendFileStruct->IsAccept)
-		//	{
-		//		//tempPrvChat = AppController::getPrivateChatFormByFriendUsername(rpSendFileStruct->strUsername);
-		//		setPrivateMessage(rpSendFileStruct->strUsername, rpSendFileStruct->strUsername + " accept a file "
-		//			+ prvChat->fileNameToSend + " (" + Convert::ToString(prvChat->fileSizeToSend) + " bytes) from you!");
+		}
+		case ChatStruct::MessageType::ResponseSendFile:
+		{
+			ResponseSendFileStruct^ rpSendFileStruct = (ResponseSendFileStruct^)msgReceived;
+			Client::PrivateChat^ prvChat = getPrivateChatFormByFriendUsername(rpSendFileStruct->strUsername);
+			if (rpSendFileStruct->IsAccept)
+			{
+				//tempPrvChat = AppController::getPrivateChatFormByFriendUsername(rpSendFileStruct->strUsername);
+				setPrivateMessage(rpSendFileStruct->strUsername, rpSendFileStruct->strUsername + " accept a file "
+					+ prvChat->fileNameToSend + " (" + Convert::ToString(prvChat->fileSizeToSend) + " bytes) from you!");
 
-		//		sendPrivateFile(prvChat->strFriendUsername, prvChat->fileNameToSend, prvChat->filePathToSend);
-		//	}
-		//	else
-		//	{
+				sendPrivateFile(prvChat->strFriendUsername, prvChat->fileNameToSend, prvChat->filePathToSend);
+			}
+			else
+			{
 
-		//		setPrivateMessage(rpSendFileStruct->strUsername, rpSendFileStruct->strUsername + " don't accept to receive file "
-		//			+ prvChat->fileNameToSend + " (" + Convert::ToString(prvChat->fileSizeToSend) + " bytes) from you!");
-		//	}
+				setPrivateMessage(rpSendFileStruct->strUsername, rpSendFileStruct->strUsername + " don't accept to receive file "
+					+ prvChat->fileNameToSend + " (" + Convert::ToString(prvChat->fileSizeToSend) + " bytes) from you!");
+			}
 
-		//	//Change listen Message to non-static method.
-		//	//Send file thread
+			//Change listen Message to non-static method.
+			//Send file thread
 
 
-		//	break;
-		//}
+			break;
+		}
 		case ChatStruct::MessageType::PrivateFile:
 		{
 			//MessageBox::Show("Received");
@@ -197,16 +219,27 @@ int AppController::login(String^ _Username, String^ _Password)
 
 	return 0;
 }
+int AppController::changePassword(String^ Username, String^ oldPassword, String^ newPassword)
+{
+	ChangePasswordStruct^ changepasswordStruct = gcnew ChangePasswordStruct();
+	changepasswordStruct->strUsername = Username;
+	changepasswordStruct->strOldPassword = oldPassword;
+	changepasswordStruct->strNewPassword = newPassword;
 
-//int AppController::logout()
-//{
-//	LogoutNotificationStruct^ logOut = gcnew LogoutNotificationStruct;
-//
-//	array<Byte>^ byteData = logOut->pack();
-//	appSocket->sendMessage(byteData);
-//
-//	return 0;
-//}
+	array<Byte>^ byteData = changepasswordStruct->pack();
+	appSocket->sendMessage(byteData);
+	return 0;
+}
+
+int AppController::logout()
+{
+	LogoutNotificationStruct^ logOut = gcnew LogoutNotificationStruct;
+
+	array<Byte>^ byteData = logOut->pack();
+	appSocket->sendMessage(byteData);
+
+	return 0;
+}
 
 int AppController::signup(String^ _Username, String^ _Password)
 {
@@ -264,18 +297,18 @@ int AppController::requestSendFile(String^ _ToUsername, String^ _FileName, int _
 
 	return 0;
 }
-//
-//int AppController::responseSendFile(String^ _ToUsername, bool _IsAccept)
-//{
-//	ResponseSendFileStruct^ rpSendFileStruct = gcnew ResponseSendFileStruct;
-//	rpSendFileStruct->strUsername = _ToUsername;
-//	rpSendFileStruct->IsAccept = _IsAccept;
-//	array<Byte>^ byteData = rpSendFileStruct->pack();
-//	appSocket->sendMessage(byteData);
-//
-//	return 0;
-//}
-//
+
+int AppController::responseSendFile(String^ _ToUsername, bool _IsAccept)
+{
+	ResponseSendFileStruct^ rpSendFileStruct = gcnew ResponseSendFileStruct;
+	rpSendFileStruct->strUsername = _ToUsername;
+	rpSendFileStruct->IsAccept = _IsAccept;
+	array<Byte>^ byteData = rpSendFileStruct->pack();
+	appSocket->sendMessage(byteData);
+
+	return 0;
+}
+
 int AppController::sendPrivateFile(String^ _ToUsername, String^ _FileName, String^ _FilePath)
 {
 	PrivateFileStruct^ prvFileStruct = gcnew PrivateFileStruct;

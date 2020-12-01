@@ -9,6 +9,7 @@ ref class AppController;
 #include "LoginForm.h"
 #include "MainForm.h"
 #include "ChatForm.h"
+#include "ChangePasswordForm.h"
 #include "ConnectServer.h"
 //Singleton pattern
 
@@ -27,6 +28,7 @@ public:
 	Client::ConnectServer^ connectServer = nullptr;
 	Client::LoginScreen^ loginScreen = nullptr;
 	Client::MainScreen^ mainScreen = nullptr;
+	Client::ChangePasswordScreen^ changePasswordScreen = nullptr;
 	List<Client::PrivateChat^>^ lstPrivateChatForm = gcnew List<Client::PrivateChat^>();
 	String^ strUsername;
 
@@ -36,13 +38,14 @@ public:
 	int createThreadListenMessageFromServer();
 
 	int login(String^ _Username, String^ _Password);
-	//int logout();
+	int changePassword(String^ Username, String^ oldPassword, String^ newPassword);
+	int logout();
 	int signup(String^ _Username, String^ _Password);
 //	int sendPublicMessage(String^ _Message);
 	int sendPrivateMessage(String^ _ToUsername, String^ _Message);
 	int requestListOnlineUsers();
 	int requestSendFile(String^ _ToUsername, String^ _FileName, int _iFileSize);
-	//int responseSendFile(String^ _ToUsername, bool _IsAccept);
+	int responseSendFile(String^ _ToUsername, bool _IsAccept);
 	int sendPrivateFile(String^ _ToUsername, String^ _FileName, String^ _FilePath);
 
 

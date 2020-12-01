@@ -44,6 +44,9 @@
     <ClInclude Include="ConnectServer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="ChangePasswordForm.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -71,6 +74,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="ConnectServer.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangePasswordForm.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

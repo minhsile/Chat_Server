@@ -9,17 +9,13 @@ System::Void ConnectServer::butConnect_Click(System::Object^ sender, System::Eve
 	String^ ipAddr = this->txtIP->Text->ToString();
 	int portAddr = Convert::ToInt32(this->txtPort->Text->ToString());
 
-	AppController^ controller = AppController::getObject();
-	controller->appSocket = gcnew AppSocket(ipAddr, portAddr);
-	if (!controller->appSocket->connectToServer() && controller->appSocket != nullptr && controller->appSocket->clientSocket != nullptr) {
-		MessageBox::Show("Connected!");
-		controller->connectServer->Hide();
-		controller->loginScreen = gcnew LoginScreen;
-		controller->loginScreen->ShowDialog();
-		//Application::Run(controller->logInScreen);
+	AppController::getObject()->appSocket = gcnew AppSocket(ipAddr, portAddr);
+	if (!AppController::getObject()->appSocket->connectToServer() && AppController::getObject()->appSocket != nullptr && AppController::getObject()->appSocket->clientSocket != nullptr) {
+		MessageBox::Show("Connected successfully!");
+		AppController::getObject()->connectServer->Hide();
+		AppController::getObject()->loginScreen = gcnew LoginScreen;
+		AppController::getObject()->loginScreen->ShowDialog();
 	}
-
-
 	else
 		Application::Exit();
 }

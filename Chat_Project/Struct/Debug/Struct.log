@@ -1,9 +1,3 @@
-﻿  pch.cpp
-  AssemblyInfo.cpp
-  Control.cpp
-  CppCLR_WinformsProjekt.cpp
-  Form1.cpp
-  Generating Code...
-  .NETFramework,Version=v4.7.2.AssemblyAttributes.cpp
+﻿  Control.cpp
   AssemblyInfo.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
   Struct.vcxproj -> C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Debug\Struct.exe

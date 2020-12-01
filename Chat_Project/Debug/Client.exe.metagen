@@ -1,4 +1,6 @@
+  Client.ChangePasswordForm.resources - Embedded, ContainedInManifestFile, 
   Client.ConnectServer.resources - Embedded, ContainedInManifestFile, 
+  Client.MainForm.resources - Embedded, ContainedInManifestFile, 
 ImageRuntimeVersion: v4.0.30319
 Assembly Client, Version=1.0.*, Culture=Invariant Language (Invariant Country): 
 	hash=SHA1, flags=PublicKey
@@ -21,7 +23,6 @@ Class Client.MainScreen: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Methods:
-    AddTextToContent(String): PrivateScope, Public, HideBySig
     UpdateOnlineUsers(): PrivateScope, Public, HideBySig
     AddAnOnlineUser(String): PrivateScope, Public, HideBySig
     DeleteAnOnlineUser(String): PrivateScope, Public, HideBySig
@@ -43,5 +44,8 @@ Class Client.PrivateChat: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
     AddTextToDisplayChatbox(String): PrivateScope, Public, HideBySig
     ThreadChooseFile(): PrivateScope, Public, HideBySig
 Class Client.ConnectServer: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class Client.ChangePasswordScreen: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName

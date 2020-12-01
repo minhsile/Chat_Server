@@ -11,7 +11,8 @@ ref class ChatStruct abstract
 {
 public:
 	enum class MessageType {
-		Login, ResponseLogin, Signup, ResponseSignup, UserStatus, PrivateMessage, PrivateFile, RequestSendFile/*, LoginNotification, LogoutNotification*/
+		Login, ResponseLogin, Signup, ResponseSignup, UserStatus, PrivateMessage, PrivateFile, RequestSendFile,
+		ChangePassword, ResponseChangePassword, LoginNotification, LogoutNotification, ResponseSendFile
 	};
 	MessageType messageType;
 

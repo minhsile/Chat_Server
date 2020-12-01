@@ -9,9 +9,12 @@ System::Void MainForm::MainForm_Load(System::Object^ sender, System::EventArgs^ 
 	ServerController^ serverController = ServerController::getObject();
 
 	//Set default serverIPAddr, serverPort
-	txtIPServer->Text = serverController->serverIPAddr;
-	txtPortServer->Text = Convert::ToString(serverController->serverPort);
-
+	//txtIPServer->Text = serverController->serverIPAddr;
+	//txtPortServer->Text = Convert::ToString(serverController->serverPort);
+	//String^ ipAddr = txtIPServer->Text->ToString();
+	//int portAddr = Convert::ToInt32(txtPortServer->Text->ToString());
+	//serverController->serverIPAddr = ipAddr;
+	//serverController->serverPort = portAddr;
 	//UpdateClientList(serverController->getRegisteredClientList());
 }
 
@@ -43,6 +46,12 @@ void MainForm::ListenClientMessage(Object^ obj)
 				ServerController::getObject()->signup(signupStruct->strUsername, signupStruct->strPassword, socket);
 				break;
 			}
+			case ChatStruct::MessageType::ChangePassword:
+			{
+				ChangePasswordStruct^ changepasswordStruct = (ChangePasswordStruct^)msgReceived;
+				ServerController::getObject()->changePassword(changepasswordStruct->strUsername, changepasswordStruct->strOldPassword, changepasswordStruct->strNewPassword, socket);
+				break;
+			}
 			case ChatStruct::MessageType::PrivateMessage:
 			{
 				PrivateMessageStruct^ privateMsgStr = (PrivateMessageStruct^)msgReceived;
@@ -55,6 +64,13 @@ void MainForm::ListenClientMessage(Object^ obj)
 				ServerController::getObject()->userStatusResponse(socket);
 				break;
 			}
+			case ChatStruct::MessageType::LogoutNotification:
+			{
+				//String^ username = ServerController::getObject()->getUsernameBySocket(socket);
+				//ServerController::getObject()->mainScreen->AddTextToContent(username + " has just logouted!");
+				ServerController::getObject()->sendLogoutNotification(socket);
+				break;
+			}
 			case ChatStruct::MessageType::RequestSendFile:
 			{
 				RequestSendFileStruct^ rqSendFileStruct = (RequestSendFileStruct^)msgReceived;
@@ -62,12 +78,12 @@ void MainForm::ListenClientMessage(Object^ obj)
 				ServerController::getObject()->requestSendFile(rqSendFileStruct->strUsername, rqSendFileStruct->strFileName, rqSendFileStruct->iFileSize, socket);
 				break;
 			}
-	/*		case ChatStruct::MessageType::ResponseSendFile:
+			case ChatStruct::MessageType::ResponseSendFile:
 			{
 				ResponseSendFileStruct^ rpSendFileStruct = (ResponseSendFileStruct^)msgReceived;
 				ServerController::getObject()->responseSendFile(rpSendFileStruct->strUsername, rpSendFileStruct->IsAccept, socket);
 				break;
-			}*/
+			}
 			case ChatStruct::MessageType::PrivateFile:
 			{
 				// MessageBox::Show("Server received: ");
@@ -139,7 +155,10 @@ void MainForm::UpdateConnectedClient(List<String^>^ lstClient) //
 System::Void MainForm::btListen_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	ServerController^ serverController = ServerController::getObject();
-
+	String^ ipAddr = txtIPServer->Text->ToString();
+	int portAddr = Convert::ToInt32(txtPortServer->Text->ToString());
+	serverController->serverIPAddr = ipAddr;
+	serverController->serverPort = portAddr;
 	//Listen 
 	IPAddress^ serverIPAddress = IPAddress::Parse(serverController->serverIPAddr);
 	int serverPort = serverController->serverPort;
