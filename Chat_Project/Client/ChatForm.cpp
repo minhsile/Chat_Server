@@ -37,7 +37,7 @@ void PrivateChat::SetCaption(String^ txtCaption)
 void PrivateChat::AddTextToDisplayChatbox(String^ text)
 {
 	DisplayChatBox->AppendText(text);
-	DisplayChatBox->AppendText("\n");
+	DisplayChatBox->AppendText("\r\n");
 }
 System::Void PrivateChat::butSend_Click(System::Object^ sender, System::EventArgs^ e) {
 

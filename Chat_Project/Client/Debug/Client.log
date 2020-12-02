@@ -1,6 +1,4 @@
-﻿  ConnectServer.cpp
-  Controller.cpp
+﻿  Controller.cpp
 C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Client\Controller.cpp(37,21): warning C4101: 'e': unreferenced local variable
-  Generating Code...
   AssemblyInfo.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
   Client.vcxproj -> C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Debug\Client.exe

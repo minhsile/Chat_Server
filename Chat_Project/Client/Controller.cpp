@@ -38,8 +38,9 @@ System::Void AppController::ListenMessage()
 		{
 			MessageBox::Show("Server has just disconnected!");
 			AppController::getObject()->appSocket->clientSocket = nullptr;
-			Application::Exit();
-			break;
+			/*Application::Exit();
+			break;*/
+			Environment::Exit(0);
 		}
 
 		ChatStruct^ msgReceived = ChatControl::unpack(buff);
