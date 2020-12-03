@@ -49,7 +49,7 @@ void MainForm::ListenClientMessage(Object^ obj)
 			case ChatStruct::MessageType::ChangePassword:
 			{
 				ChangePasswordStruct^ changepasswordStruct = (ChangePasswordStruct^)msgReceived;
-				ServerController::getObject()->changePassword(changepasswordStruct->strUsername, changepasswordStruct->strOldPassword, changepasswordStruct->strNewPassword, socket);
+				ServerController::getObject()->changePassword(changepasswordStruct->strUsername, changepasswordStruct->strOldPassword, changepasswordStruct->strNewPassword,changepasswordStruct->strConfirmNewPassword, socket);
 				break;
 			}
 			case ChatStruct::MessageType::PrivateMessage:

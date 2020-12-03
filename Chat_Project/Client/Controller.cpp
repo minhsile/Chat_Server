@@ -51,6 +51,7 @@ System::Void AppController::ListenMessage()
 			break;
 		case ChatStruct::MessageType::ResponseLogin:
 		{
+			//MessageBox::Show("Hello!");
 			ResponseLoginStruct^ resLoginStruct = (ResponseLoginStruct^)msgReceived;
 			if (resLoginStruct->IsSucc)
 			{
@@ -68,11 +69,11 @@ System::Void AppController::ListenMessage()
 			break;
 		}
 		case ChatStruct::MessageType::ChangePassword:
-			//MessageBox::Show("Login Message?");
 			break;
 		case ChatStruct::MessageType::ResponseChangePassword:
 		{
 			ResponseChangePasswordStruct^ resChangepassStruct = (ResponseChangePasswordStruct^)msgReceived;
+			//MessageBox::Show("Hello!");
 			if (resChangepassStruct->IsSucc)
 			{
 				MessageBox::Show("Password changed successfully!");
@@ -220,12 +221,13 @@ int AppController::login(String^ _Username, String^ _Password)
 
 	return 0;
 }
-int AppController::changePassword(String^ Username, String^ oldPassword, String^ newPassword)
+int AppController::changePassword(String^ Username, String^ oldPassword, String^ newPassword, String^ confirmnewPassword)
 {
 	ChangePasswordStruct^ changepasswordStruct = gcnew ChangePasswordStruct();
 	changepasswordStruct->strUsername = Username;
 	changepasswordStruct->strOldPassword = oldPassword;
 	changepasswordStruct->strNewPassword = newPassword;
+	changepasswordStruct->strConfirmNewPassword = confirmnewPassword;
 
 	array<Byte>^ byteData = changepasswordStruct->pack();
 	appSocket->sendMessage(byteData);

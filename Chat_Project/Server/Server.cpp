@@ -36,10 +36,10 @@ int ServerController::createSocket()
 //Helper
 
 
-bool ServerController::checkLogin(String^ _Username, String^ _Password, String^& errorMsg)
+bool ServerController::checkLogin(String^ Username, String^ Password, String^& errorMsg)
 {
 	//Check for blank!
-	if (String::IsNullOrEmpty(_Username) || String::IsNullOrEmpty(_Password))
+	if (String::IsNullOrEmpty(Username) || String::IsNullOrEmpty(Password))
 	{
 		errorMsg = "Username or Password can't be blank!";
 		return false;
@@ -47,14 +47,14 @@ bool ServerController::checkLogin(String^ _Username, String^ _Password, String^&
 
 	//Check for special characters
 	//String^ lstSpecialCharacters = "|"
-	if (_Username->Contains("|") || _Username->Contains("|"))
+	if (Username->Contains("|") || Username->Contains("|"))
 	{
 		errorMsg = "Username or password can't contain special characters!";
 		return false;
 	}
 
 	//Check account in database
-	if (!checkAccount(_Username, _Password))
+	if (!checkAccount(Username, Password))
 	{
 		errorMsg = "Username or Password is not correct!";
 		return false;
@@ -63,7 +63,7 @@ bool ServerController::checkLogin(String^ _Username, String^ _Password, String^&
 	//Check account in current online
 	for each (String ^ user in getListClient())
 	{
-		if (_Username == user)
+		if (Username == user)
 		{
 			errorMsg = user + " is current login on another client!";
 			return false;
@@ -73,13 +73,13 @@ bool ServerController::checkLogin(String^ _Username, String^ _Password, String^&
 	return true;
 }
 
-bool ServerController::checkAccount(String^ _Username, String^ _Password)
+bool ServerController::checkAccount(String^ Username, String^ Password)
 {
 	array<String^>^ lines = System::IO::File::ReadAllLines(accountPath);
 	for each (String ^ line in lines)
 	{
 		//MessageBox::Show(line);
-		if (line == _Username + "|" + _Password)
+		if (line == Username + "|" + Password)
 		{
 			return true;
 		}
@@ -88,10 +88,10 @@ bool ServerController::checkAccount(String^ _Username, String^ _Password)
 	return false;
 }
 
-bool ServerController::checkSignup(String^ _Username, String^ _Password, String^& errorMsg)
+bool ServerController::checkSignup(String^ Username, String^ Password, String^& errorMsg)
 {
 	//Check for blank!
-	if (String::IsNullOrEmpty(_Username) || String::IsNullOrEmpty(_Password))
+	if (String::IsNullOrEmpty(Username) || String::IsNullOrEmpty(Password))
 	{
 		errorMsg = "Username or Password can't be blank!";
 		return false;
@@ -99,20 +99,20 @@ bool ServerController::checkSignup(String^ _Username, String^ _Password, String^
 
 	//Check for special characters
 	//String^ lstSpecialCharacters = "|"
-	if (_Username->Contains("|") || _Password->Contains("|"))
+	if (Username->Contains("|") || Password->Contains("|"))
 	{
 		errorMsg = "Username or password can't contain special characters!";
 		return false;
 	}
 
 	//Check exists username in database
-	if (checkAccountExists(_Username))
+	if (checkAccountExists(Username))
 	{
 		errorMsg = "This username has been registered!";
 		return false;
 	}
 
-	if (!addAnAccountToDatabase(_Username, _Password))
+	if (!addAnAccountToDatabase(Username, Password))
 	{
 		errorMsg = "Can't register!";
 		return false;
@@ -120,10 +120,10 @@ bool ServerController::checkSignup(String^ _Username, String^ _Password, String^
 
 	return true;
 }
-bool ServerController::checkChangePass(String^ _Username, String^ _Password, String^& errorMsg)
+bool ServerController::checkChangePass(String^ Username, String^ Password, String^ newPassword, String^ confirmnewPassword, String^& errorMsg)
 {
 	//Check for blank!
-	if (String::IsNullOrEmpty(_Username) || String::IsNullOrEmpty(_Password))
+	if (String::IsNullOrEmpty(Username) || String::IsNullOrEmpty(Password))
 	{
 		errorMsg = "Username or Password can't be blank!";
 		return false;
@@ -131,27 +131,32 @@ bool ServerController::checkChangePass(String^ _Username, String^ _Password, Str
 
 	//Check for special characters
 	//String^ lstSpecialCharacters = "|"
-	if (_Username->Contains("|") || _Username->Contains("|"))
+	if (Username->Contains("|") || Username->Contains("|"))
 	{
 		errorMsg = "Username or password can't contain special characters!";
 		return false;
 	}
 
 	//Check account in database
-	if (!checkAccount(_Username, _Password))
+	if (!checkAccount(Username, Password))
 	{
 		errorMsg = "Username or Password is not correct!";
 		return false;
 	}
+	if (newPassword != confirmnewPassword)
+	{
+		errorMsg = "Password and Confirm Password does not match!";
+		return false;
+	}
 	return true;
 }
-bool ServerController::checkAccountExists(String^ _Username)
+bool ServerController::checkAccountExists(String^ Username)
 {
 	array<String^>^ lines = System::IO::File::ReadAllLines(accountPath);
 	for each (String ^ line in lines)
 	{
 		//MessageBox::Show(line);
-		if (line->Contains(_Username + "|"))
+		if (line->Contains(Username + "|"))
 		{
 			return true;
 		}
@@ -160,11 +165,11 @@ bool ServerController::checkAccountExists(String^ _Username)
 	return false;
 }
 
-bool ServerController::addAnAccountToDatabase(String^ _Username, String^ _Password)
+bool ServerController::addAnAccountToDatabase(String^ Username, String^ Password)
 {
 	try
 	{
-		System::IO::File::AppendAllText(accountPath, _Username + "|" + _Password + "\n");
+		System::IO::File::AppendAllText(accountPath, Username + "|" + Password + "\n");
 	}
 	catch (Exception^ e)
 	{
@@ -173,18 +178,18 @@ bool ServerController::addAnAccountToDatabase(String^ _Username, String^ _Passwo
 	return true;
 }
 
-bool ServerController::login(String^ _UserName, String^ _Password, Socket^ _ClientSocket)
+bool ServerController::login(String^ Username, String^ Password, Socket^ _ClientSocket)
 {
 	String^ errorMsg = "";
-	if (checkLogin(_UserName, _Password, errorMsg))
+	if (checkLogin(Username, Password, errorMsg))
 	{
-		lstClientInfo->Add(gcnew ClientInfo(_ClientSocket, _UserName));
+		lstClientInfo->Add(gcnew ClientInfo(_ClientSocket, Username));
 		mainForm->UpdateConnectedClient(getListClient()); //Update list connected
 
-		mainForm->AddTextToContent(_UserName + " hast just online!");
+		mainForm->AddTextToContent(Username + " hast just online!");
 		loginResponse(true, errorMsg, _ClientSocket);
 		mainForm->UpdateConnectedClient(getListClient());
-		sendLoginNotification(_UserName, _ClientSocket);
+		sendLoginNotification(Username, _ClientSocket);
 
 		return true; //Login successs
 	}
@@ -194,20 +199,20 @@ bool ServerController::login(String^ _UserName, String^ _Password, Socket^ _Clie
 	return false; //Error login
 }
 
-void ServerController::loginResponse(bool _IsSucc, String^ _errorMsg, Socket^ _ClientSocket)
+void ServerController::loginResponse(bool IsSucc, String^ _errorMsg, Socket^ _ClientSocket)
 {
 	ResponseLoginStruct^ resLogin = gcnew ResponseLoginStruct;
-	resLogin->IsSucc = _IsSucc;
+	resLogin->IsSucc = IsSucc;
 	resLogin->errorMsg = _errorMsg;
 	array<Byte>^ buff = resLogin->pack();
 
 	_ClientSocket->Send(buff); //Send the result to client.
 }
 
-bool ServerController::signup(String^ _UserName, String^ _Password, Socket^ _ClientSocket)
+bool ServerController::signup(String^ Username, String^ Password, Socket^ _ClientSocket)
 {
 	String^ errorMsg = "";
-	if (checkSignup(_UserName, _Password, errorMsg))
+	if (checkSignup(Username, Password, errorMsg))
 	{
 		signupResponse(true, errorMsg, _ClientSocket);
 		//mainForm->UpdateClientList(getRegisteredClientList());
@@ -219,51 +224,55 @@ bool ServerController::signup(String^ _UserName, String^ _Password, Socket^ _Cli
 	return false; //Error sign up
 }
 
-void ServerController::signupResponse(bool _IsSucc, String^ errorMsg, Socket^ _ClientSocket)
+void ServerController::signupResponse(bool IsSucc, String^ errorMsg, Socket^ _ClientSocket)
 {
 	ResponseSignupStruct^ resSignup = gcnew ResponseSignupStruct;
-	resSignup->IsSucc = _IsSucc;
+	resSignup->IsSucc = IsSucc;
 	resSignup->errorMsg = errorMsg;
 	array<Byte>^ buff = resSignup->pack();
 
 	_ClientSocket->Send(buff); //Send the result to client.
 }
 
-bool ServerController::changePassword(String^ Username, String^ oldPassword, String^ newPassword, Socket^ _ClientSocket)
+bool ServerController::changePassword(String^ Username, String^ oldPassword, String^ newPassword, String^ confirmnewPassword, Socket^ _ClientSocket)
 {
 	String^ errorMsg = "";
-	if (checkChangePass(Username, oldPassword, errorMsg))
+	if (checkChangePass(Username, oldPassword,newPassword, confirmnewPassword, errorMsg))
 	{
 		array<String^>^ lines = System::IO::File::ReadAllLines(accountPath);
-		for each (String ^ line in lines)
+		//for each (String ^ line in lines)
+		for (int i = 0; i < lines->Length; i++)
 		{
 			//MessageBox::Show(line);
-			if (line == Username + "|" + oldPassword)
+			if (lines[i] == Username + "|" + oldPassword)
 			{
-				line->Replace(Username + "|" + oldPassword, Username + "|" + newPassword);
+				//MessageBox::Show(line);
+				//line->Replace(/*Username + "|" + oldPassword*/line, Username + "|" + newPassword);
+				lines[i] = Username + "|" + newPassword;
 				break;
 			}
 		}
+		System::IO::File::WriteAllLines(accountPath, lines);
 		changePassResponse(true, errorMsg, _ClientSocket);
-		return true; 
+		return true;
 	}
 	changePassResponse(false, errorMsg, _ClientSocket);
 	return false; //Error 
 }
-void ServerController::changePassResponse(bool _IsSucc, String^ errorMsg, Socket^ _ClientSocket)
+void ServerController::changePassResponse(bool IsSucc, String^ errorMsg, Socket^ _ClientSocket)
 {
 	ResponseChangePasswordStruct^ resChangePass = gcnew ResponseChangePasswordStruct;
-	resChangePass->IsSucc = _IsSucc;
+	resChangePass->IsSucc = IsSucc;
 	resChangePass->errorMsg = errorMsg;
 	array<Byte>^ buff = resChangePass->pack();
 
 	_ClientSocket->Send(buff); //Send the result to client.
 }
 
-void ServerController::sendLoginNotification(String^ _Username, Socket^ _ClientSocket)
+void ServerController::sendLoginNotification(String^ Username, Socket^ _ClientSocket)
 {
 	LoginNotificationStruct^ loginNoti = gcnew LoginNotificationStruct;
-	loginNoti->strUsername = _Username;
+	loginNoti->strUsername = Username;
 	array<Byte>^ buff = loginNoti->pack();
 
 	for each (ClientInfo ^ clientInfo in lstClientInfo)
@@ -320,19 +329,19 @@ String^ ServerController::getUsernameBySocket(Socket^ _socket)
 	return nullptr;
 }
 
-Socket^ ServerController::getSocketByUsername(String^ _username)
+Socket^ ServerController::getSocketByUsername(String^ Username)
 {
 	for each (ClientInfo ^ clientInfo in lstClientInfo)
-		if (clientInfo->strUsermame == _username)
+		if (clientInfo->strUsermame == Username)
 			return clientInfo->clientSocket;
 
 	return nullptr;
 }
 
-void ServerController::removeClientInfoByUsername(String^ _username)
+void ServerController::removeClientInfoByUsername(String^ Username)
 {
 	for each (ClientInfo ^ clientInfo in lstClientInfo)
-		if (clientInfo->strUsermame == _username)
+		if (clientInfo->strUsermame == Username)
 		{
 			lstClientInfo->Remove(clientInfo);
 			break;

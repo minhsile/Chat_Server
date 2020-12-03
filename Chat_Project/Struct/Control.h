@@ -79,7 +79,7 @@ public:
 			result->unpack(buff);
 			break;
 		case ChatStruct::MessageType::ResponseChangePassword:
-			result = gcnew ResponseLoginStruct();
+			result = gcnew ResponseChangePasswordStruct();
 			result->messageType = ChatStruct::MessageType::ResponseChangePassword;
 			result->unpack(buff);
 			break;

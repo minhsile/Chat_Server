@@ -45,22 +45,22 @@ public:
 
 
 	//Helper
-	bool checkLogin(String^ _Username, String^ _Password, String^& errorMsg);
-	bool checkAccount(String^ _Username, String^ _Password);
-	bool checkSignup(String^ _Username, String^ _Password, String^& errorMsg);
-	bool checkChangePass(String^ _Username, String^ _Password, String^& errorMsg);
-	bool checkAccountExists(String^ _Username);
-	bool addAnAccountToDatabase(String^ _Username, String^ _Password);
+	bool checkLogin(String^ Username, String^ Password, String^& errorMsg);
+	bool checkAccount(String^ Username, String^ Password);
+	bool checkSignup(String^ Username, String^ Password, String^& errorMsg);
+	bool checkChangePass(String^ Username, String^ Password, String^ newPassword, String^ confirmnewPassword, String^& errorMsg);
+	bool checkAccountExists(String^ Username);
+	bool addAnAccountToDatabase(String^ Username, String^ Password);
 
 	//Main calling
-	bool login(String^ _UserName, String^ _Password, Socket^ _ClientSocket);
-	void loginResponse(bool _IsSucc, String^ errorMsg, Socket^ _ClientSocket);
-	bool signup(String^ _Username, String^ _Password, Socket^ _ClientSocket);
-	void signupResponse(bool _IsSucc, String^ errorMsg, Socket^ _ClientSocket);
-	bool changePassword(String^ Username, String^ oldPassword, String^ newPassword, Socket^ _ClientSocket);
-	void changePassResponse(bool _IsSucc, String^ errorMsg, Socket^ _ClientSocket);
+	bool login(String^ Username, String^ Password, Socket^ _ClientSocket);
+	void loginResponse(bool IsSucc, String^ errorMsg, Socket^ _ClientSocket);
+	bool signup(String^ Username, String^ Password, Socket^ _ClientSocket);
+	void signupResponse(bool IsSucc, String^ errorMsg, Socket^ _ClientSocket);
+	bool changePassword(String^ Username, String^ oldPassword, String^ newPassword, String^ confirmnewPassword, Socket^ _ClientSocket);
+	void changePassResponse(bool IsSucc, String^ errorMsg, Socket^ _ClientSocket);
 	void userStatusResponse(Socket^ _ClientSocket);
-	void sendLoginNotification(String^ _Username, Socket^ _ClientSocket);
+	void sendLoginNotification(String^ Username, Socket^ _ClientSocket);
 	void sendLogoutNotification(Socket^ _ClientSocket);
 	void requestSendFile(String^ _ToUsername, String^ _FileName, int _iFileSize, Socket^ _ClientSocket);
 	void responseSendFile(String^ _ToUsername, bool _IsAccept, Socket^ _ClientSocket);
@@ -75,7 +75,7 @@ public:
 	List<String^>^ getListClient();
 	List<String^>^ getRegisteredClientList();
 	String^ getUsernameBySocket(Socket^ _socket);
-	Socket^ getSocketByUsername(String^ _username);
-	void removeClientInfoByUsername(String^ _username);
+	Socket^ getSocketByUsername(String^ Username);
+	void removeClientInfoByUsername(String^ Username);
 };
 

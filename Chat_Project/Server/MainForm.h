@@ -50,12 +50,12 @@ namespace Server {
 	private: System::Windows::Forms::TextBox^ txtPortServer;
 	private: System::Windows::Forms::TextBox^ txtClientChatBox;
 	private: System::Windows::Forms::Label^ labConference;
-
+	private: System::Windows::Forms::Button^ btListen;
 
 	private: System::Windows::Forms::Label^ labConnect;
 	private: System::Windows::Forms::TextBox^ txtConnected;
 	private: System::ComponentModel::BackgroundWorker^ backgroundWorker1;
-	private: System::Windows::Forms::Button^ btListen;
+	
 
 	private:
 		/// <summary>
@@ -74,12 +74,12 @@ namespace Server {
 			this->txtIPServer = (gcnew System::Windows::Forms::TextBox());
 			this->labPortServer = (gcnew System::Windows::Forms::Label());
 			this->txtPortServer = (gcnew System::Windows::Forms::TextBox());
+			this->btListen = (gcnew System::Windows::Forms::Button());
 			this->txtClientChatBox = (gcnew System::Windows::Forms::TextBox());
 			this->labConference = (gcnew System::Windows::Forms::Label());
 			this->labConnect = (gcnew System::Windows::Forms::Label());
 			this->txtConnected = (gcnew System::Windows::Forms::TextBox());
 			this->backgroundWorker1 = (gcnew System::ComponentModel::BackgroundWorker());
-			this->btListen = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			this->labIPServer->AutoSize = true;
 			this->labIPServer->Location = System::Drawing::Point(23, 13);
@@ -102,13 +102,20 @@ namespace Server {
 			this->txtPortServer->Name = L"txtPortServer";
 			this->txtPortServer->Size = System::Drawing::Size(67, 20);
 			this->txtPortServer->TabIndex = 4;
+			this->btListen->Location = System::Drawing::Point(67, 71);
+			this->btListen->Name = L"btListen";
+			this->btListen->Size = System::Drawing::Size(75, 23);
+			this->btListen->TabIndex = 5;
+			this->btListen->Text = L"Run Server";
+			this->btListen->UseVisualStyleBackColor = true;
+			this->btListen->Click += gcnew System::EventHandler(this, &MainForm::btListen_Click);
 			this->txtClientChatBox->Location = System::Drawing::Point(162, 37);
 			this->txtClientChatBox->Multiline = true;
 			this->txtClientChatBox->Name = L"txtClientChatBox";
 			this->txtClientChatBox->ReadOnly = true;
 			this->txtClientChatBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
 			this->txtClientChatBox->Size = System::Drawing::Size(267, 187);
-			this->txtClientChatBox->TabIndex = 5;
+			this->txtClientChatBox->TabIndex = 10;
 			this->labConference->AutoSize = true;
 			this->labConference->Location = System::Drawing::Point(268, 17);
 			this->labConference->Name = L"labConference";
@@ -129,13 +136,6 @@ namespace Server {
 			this->txtConnected->Size = System::Drawing::Size(130, 88);
 			this->txtConnected->TabIndex = 10;
 			this->backgroundWorker1->DoWork += gcnew System::ComponentModel::DoWorkEventHandler(this, &MainForm::backgroundWorker1_DoWork);
-			this->btListen->Location = System::Drawing::Point(67, 71);
-			this->btListen->Name = L"btListen";
-			this->btListen->Size = System::Drawing::Size(75, 23);
-			this->btListen->TabIndex = 11;
-			this->btListen->Text = L"Run Server";
-			this->btListen->UseVisualStyleBackColor = true;
-			this->btListen->Click += gcnew System::EventHandler(this, &MainForm::btListen_Click);
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(441, 240);

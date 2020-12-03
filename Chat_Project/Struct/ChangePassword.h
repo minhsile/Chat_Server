@@ -7,12 +7,14 @@ public:
 	String^ strUsername;
 	String^ strOldPassword;
 	String^ strNewPassword;
+	String^ strConfirmNewPassword;
 
 	ChangePasswordStruct()
 	{
 		strUsername = nullptr;
 		strOldPassword = nullptr;
 		strNewPassword = nullptr;
+		strConfirmNewPassword = nullptr;
 	}
 	virtual array<Byte>^ pack() override
 	{
@@ -44,6 +46,14 @@ public:
 		}
 		else
 			byteData->AddRange(BitConverter::GetBytes(0));
+		//add Confirm New Password Info
+		if (strNewPassword != nullptr)
+		{
+			byteData->AddRange(BitConverter::GetBytes(Encoding::UTF8->GetByteCount(strConfirmNewPassword))); //Length of password
+			byteData->AddRange(Encoding::UTF8->GetBytes(strConfirmNewPassword)); //Password string
+		}
+		else
+			byteData->AddRange(BitConverter::GetBytes(0));
 		//Return
 		return byteData->ToArray();
 	}
@@ -51,7 +61,7 @@ public:
 	virtual ChatStruct^ unpack(array<Byte>^ buff) override
 	{
 		int offset = 4; //Skip messageType
-		int usernameLength, oldpasswordLength, newpasswordLength;
+		int usernameLength, oldpasswordLength, newpasswordLength, confirmnewpasswordLength;
 
 		usernameLength = BitConverter::ToInt32(buff, offset);
 		offset += 4; //Update Offset
@@ -70,6 +80,13 @@ public:
 		offset += 4; //Update offset
 		if (newpasswordLength > 0)
 			strNewPassword = Encoding::UTF8->GetString(buff, offset, newpasswordLength);
+		offset += newpasswordLength;
+
+		confirmnewpasswordLength = BitConverter::ToInt32(buff, offset);
+		offset += 4; //Update offset
+		if (confirmnewpasswordLength > 0)
+			strConfirmNewPassword = Encoding::UTF8->GetString(buff, offset, confirmnewpasswordLength);
+
 		return this;
 	}
 };

@@ -84,5 +84,6 @@ System::Void MainScreen::MainScreen_FormClosed(System::Object^ sender, System::W
 System::Void MainScreen::butChangePass_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	AppController::getObject()->changePasswordScreen = gcnew Client::ChangePasswordScreen;
-	AppController::getObject()->changePasswordScreen->ShowDialog();
+	//AppController::getObject()->changePasswordScreen->ShowDialog();
+	AppController::getObject()->changePasswordScreen->Show();
 }

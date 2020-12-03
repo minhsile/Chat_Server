@@ -38,7 +38,7 @@ public:
 	int createThreadListenMessageFromServer();
 
 	int login(String^ _Username, String^ _Password);
-	int changePassword(String^ Username, String^ oldPassword, String^ newPassword);
+	int changePassword(String^ Username, String^ oldPassword, String^ newPassword, String^ confirmnewPassword);
 	int logout();
 	int signup(String^ _Username, String^ _Password);
 //	int sendPublicMessage(String^ _Message);
