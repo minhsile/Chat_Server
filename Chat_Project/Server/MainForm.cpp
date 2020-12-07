@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+﻿//#include "pch.h"
 // #include "Form1.h"
 #include "MainForm.h"
 #include "../Struct/AllStruct.h"
@@ -39,7 +39,12 @@ void MainForm::ListenClientMessage(Object^ obj)
 				ServerController::getObject()->login(loginStruct->strUsername, loginStruct->strPassword, socket);
 				break;
 			}
-
+			case ChatStruct::MessageType::SetInfor:
+			{
+				SetInformationStruct^ setInforStruct = (SetInformationStruct^)msgReceived;
+				ServerController::getObject()->setInfor(setInforStruct->userName, setInforStruct->birthDate);
+				break;
+			}
 			case ChatStruct::MessageType::Signup:
 			{
 				SignupStruct^ signupStruct = (SignupStruct^)msgReceived;
@@ -66,8 +71,6 @@ void MainForm::ListenClientMessage(Object^ obj)
 			}
 			case ChatStruct::MessageType::LogoutNotification:
 			{
-				//String^ username = ServerController::getObject()->getUsernameBySocket(socket);
-				//ServerController::getObject()->mainScreen->AddTextToContent(username + " has just logouted!");
 				ServerController::getObject()->sendLogoutNotification(socket);
 				break;
 			}
@@ -86,12 +89,22 @@ void MainForm::ListenClientMessage(Object^ obj)
 			}
 			case ChatStruct::MessageType::PrivateFile:
 			{
-				// MessageBox::Show("Server received: ");
-				PrivateFileStruct^ prvFileStruct = (PrivateFileStruct^)msgReceived;
-				ServerController::getObject()->sendPrivateFilePackage(prvFileStruct->strUsername, prvFileStruct->strFilename, prvFileStruct->iPackageNumber, prvFileStruct->iTotalPackage, prvFileStruct->bData, socket);
+				try {
+					//MessageBox::Show("Server received: ");
+					PrivateFileStruct^ prvFileStruct = (PrivateFileStruct^)msgReceived;
+					ServerController::getObject()->sendPrivateFilePackage(prvFileStruct->strUsername, prvFileStruct->strFilename, prvFileStruct->iPackageNumber, prvFileStruct->iTotalPackage, prvFileStruct->bData, socket);
+				}
+				catch (Exception^ e) {
+					MessageBox::Show(e->Message, "Error Server(Private File)");
+				}
 				break;
 			}
-
+			case ChatStruct::MessageType::RequestInfor:
+			{
+				RequestInforStruct^ rpSendFileStruct = (RequestInforStruct^)msgReceived;
+				ServerController::getObject()->responseInfor(rpSendFileStruct->friendUsername, socket);
+				break;
+			}
 			default:
 				break;
 			}
@@ -99,8 +112,6 @@ void MainForm::ListenClientMessage(Object^ obj)
 		}
 		catch (Exception^ e)
 		{
-			//Vào đây là mất kết nối với Client
-			//lstConnectionSocket->Remove(socket);
 			return; //Finish this thread
 		}
 	}
@@ -119,9 +130,6 @@ System::Void MainForm::backgroundWorker1_DoWork(System::Object^ sender, System::
 		threadListenClient = gcnew Thread(gcnew ParameterizedThreadStart(MainForm::ListenClientMessage));
 		threadListenClient->IsBackground = true;
 		threadListenClient->Start(connectionSocket); //Listen messages from client
-
-		//String^ announce = L"Kết nối " + connectionSocket->RemoteEndPoint->ToString();
-		//AddTextToMainChat(announce);
 	}
 
 }
@@ -174,4 +182,29 @@ System::Void MainForm::btListen_Click(System::Object^ sender, System::EventArgs^
 	btListen->Enabled = false;
 	txtIPServer->ReadOnly = true;
 	txtPortServer->ReadOnly = true;
+}
+
+String^ MainForm::MainForm::convertStringToHex(String^ input)
+{
+	List<Byte>^ stringBytes = gcnew List<Byte>();
+	stringBytes->AddRange(Encoding::UTF8->GetBytes(input));
+	array<Byte>^ temp = stringBytes->ToArray();
+	StringBuilder^ sbBytes = gcnew StringBuilder(temp->Length * 2);
+	for each (Byte b in temp)
+	{
+		sbBytes->AppendFormat("{0:X2}", b);
+	}
+	return sbBytes->ToString();
+}
+
+String^ MainForm::MainForm::convertHexToString(String^ hexInput)
+{
+	int numberChars = hexInput->Length;
+	array<Byte>^ bytes = gcnew array<Byte>(numberChars / 2);
+	// byte[] bytes = new byte[numberChars / 2];
+	for (int i = 0; i < numberChars; i += 2)
+	{
+		bytes[i / 2] = Convert::ToByte(hexInput->Substring(i, 2), 16);
+	}
+	return Encoding::UTF8->GetString(bytes);
 }

@@ -15,3 +15,6 @@
 #include "ResponseChangePassword.h"
 #include "LoginNotification.h"
 #include "LogoutNotification.h"
+#include "SetInfor.h"
+#include "RequestInfor.h"
+#include "ResponseInfor.h"

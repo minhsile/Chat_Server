@@ -26,8 +26,11 @@ System::Void PrivateChat::butFile_Click(System::Object^ sender, System::EventArg
 	newThread->SetApartmentState(ApartmentState::STA);
 	newThread->Start();
 }
-System::Void PrivateChat::button1_Click(System::Object^ sender, System::EventArgs^ e) {
+System::Void PrivateChat::butViewInfor_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	AppController::getObject()->requestInfor(strFriendUsername);
 }
+
 
 void PrivateChat::SetCaption(String^ txtCaption)
 {
@@ -54,11 +57,20 @@ System::Void PrivateChat::PrivateChat_Load(System::Object^ sender, System::Event
 System::Void PrivateChat::PrivateChat_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e)
 {
 	AppController::getObject()->lstPrivateChatForm->Remove(this);
-	/*
-		int counter = AppController::getObject()->lstPrivateChatForm->Count;
-		MessageBox::Show(Convert::ToString(counter));*/
 }
 
 System::Void PrivateChat::PrivateChat_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e)
 {
+}
+
+String^ PrivateChat::splitPathFileToReceiver(String^ pathFile) {
+	int length = pathFile->Length;
+	int i = length - 1;
+	for (i; i >= 0; --i) {
+		if (pathFile[i] == '\\')
+			break;
+	}
+	pathFile = pathFile->Remove(i + 1);
+
+	return pathFile;
 }

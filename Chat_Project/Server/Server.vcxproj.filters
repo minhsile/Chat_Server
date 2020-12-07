@@ -23,23 +23,17 @@
     <ClInclude Include="Resource.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="MainForm.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Server.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Ressourcendateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AssemblyInfo.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -48,6 +42,12 @@
     </ClCompile>
     <ClCompile Include="Server.cpp">
       <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Ressourcendateien</Filter>
+    </ClCompile>
+    <ClCompile Include="AssemblyInfo.cpp">
+      <Filter>Ressourcendateien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

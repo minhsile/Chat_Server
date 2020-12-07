@@ -87,7 +87,6 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
@@ -115,7 +114,6 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -157,17 +155,23 @@
     <ClInclude Include="PrivateChat.h" />
     <ClInclude Include="PrivateFile.h" />
     <ClInclude Include="RequestSendFile.h" />
+    <ClInclude Include="ResponseInfor.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResponseChangePassword.h" />
     <ClInclude Include="ResponseLogin.h" />
     <ClInclude Include="ResponseSendFile.h" />
     <ClInclude Include="ResponseSignup.h" />
+    <ClInclude Include="RequestInfor.h" />
+    <ClInclude Include="SetInfor.h" />
     <ClInclude Include="Signup.h" />
     <ClInclude Include="UserStatus.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="Control.cpp" />
+    <ClCompile Include="Control.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="CppCLR_WinformsProjekt.cpp" />
     <ClCompile Include="Form1.cpp" />
     <ClCompile Include="pch.cpp">

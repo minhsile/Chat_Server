@@ -15,6 +15,7 @@ System::Void ConnectServer::butConnect_Click(System::Object^ sender, System::Eve
 		AppController::getObject()->connectServer->Hide();
 		AppController::getObject()->loginScreen = gcnew LoginScreen;
 		AppController::getObject()->loginScreen->ShowDialog();
+		//Application::Run(AppController::getObject()->loginScreen);
 	}
 	else
 		Application::Exit();

@@ -47,12 +47,12 @@ namespace Client {
 
 	protected:
 	private: System::Windows::Forms::Label^ labInfo;
-	private: System::Windows::Forms::Label^ labName;
-	private: System::Windows::Forms::TextBox^ txtUsername;
-	private: System::Windows::Forms::Button^ butDisconnect;
+	private: System::Windows::Forms::Button^ butSetInfor;
 	private: System::Windows::Forms::Label^ labOnline;
 	private: System::Windows::Forms::ListBox^ lbOnlineUser;
 	private: System::Windows::Forms::Button^ butChangePass;
+	private: System::Windows::Forms::Button^ butDisconnect;
+	private: System::Windows::Forms::TextBox^ txtUsername;
 
 
 	private:
@@ -69,12 +69,12 @@ namespace Client {
 		void InitializeComponent(void)
 		{
 			this->labInfo = (gcnew System::Windows::Forms::Label());
-			this->labName = (gcnew System::Windows::Forms::Label());
-			this->txtUsername = (gcnew System::Windows::Forms::TextBox());
 			this->butDisconnect = (gcnew System::Windows::Forms::Button());
 			this->labOnline = (gcnew System::Windows::Forms::Label());
 			this->lbOnlineUser = (gcnew System::Windows::Forms::ListBox());
 			this->butChangePass = (gcnew System::Windows::Forms::Button());
+			this->butSetInfor = (gcnew System::Windows::Forms::Button());
+			this->txtUsername = (gcnew System::Windows::Forms::TextBox());
 			this->SuspendLayout();
 			this->labInfo->AutoSize = true;
 			this->labInfo->Location = System::Drawing::Point(20, 188);
@@ -82,19 +82,7 @@ namespace Client {
 			this->labInfo->Size = System::Drawing::Size(141, 13);
 			this->labInfo->TabIndex = 11;
 			this->labInfo->Text = L"----------------- MY INFO -----------";
-			this->labName->AutoSize = true;
-			this->labName->Location = System::Drawing::Point(16, 213);
-			this->labName->Name = L"labName";
-			this->labName->Size = System::Drawing::Size(38, 13);
-			this->labName->TabIndex = 14;
-			this->labName->Text = L"Name:";
-			this->labName->Click += gcnew System::EventHandler(this, &MainScreen::label3_Click);
-			this->txtUsername->Location = System::Drawing::Point(60, 210);
-			this->txtUsername->Name = L"txtUsername";
-			this->txtUsername->ReadOnly = true;
-			this->txtUsername->Size = System::Drawing::Size(100, 20);
-			this->txtUsername->TabIndex = 17;
-			this->butDisconnect->Location = System::Drawing::Point(41, 236);
+			this->butDisconnect->Location = System::Drawing::Point(46, 307);
 			this->butDisconnect->Name = L"butDisconnect";
 			this->butDisconnect->Size = System::Drawing::Size(99, 23);
 			this->butDisconnect->TabIndex = 19;
@@ -113,23 +101,34 @@ namespace Client {
 			this->lbOnlineUser->Size = System::Drawing::Size(137, 160);
 			this->lbOnlineUser->TabIndex = 21;
 			this->lbOnlineUser->MouseDoubleClick += gcnew System::Windows::Forms::MouseEventHandler(this, &MainScreen::lbOnlineUser_MouseDoubleClick);
-			this->butChangePass->Location = System::Drawing::Point(41, 265);
+			this->butChangePass->Location = System::Drawing::Point(33, 274);
 			this->butChangePass->Name = L"butChangePass";
-			this->butChangePass->Size = System::Drawing::Size(99, 23);
+			this->butChangePass->Size = System::Drawing::Size(120, 23);
 			this->butChangePass->TabIndex = 22;
 			this->butChangePass->Text = L"Change Password";
 			this->butChangePass->UseVisualStyleBackColor = true;
 			this->butChangePass->Click += gcnew System::EventHandler(this, &MainScreen::butChangePass_Click);
+			this->butSetInfor->Location = System::Drawing::Point(33, 241);
+			this->butSetInfor->Name = L"butSetInfor";
+			this->butSetInfor->Size = System::Drawing::Size(120, 23);
+			this->butSetInfor->TabIndex = 23;
+			this->butSetInfor->Text = L"Set Information";
+			this->butSetInfor->UseVisualStyleBackColor = true;
+			this->butSetInfor->Click += gcnew System::EventHandler(this, &MainScreen::butSetInfor_Click);
+			this->txtUsername->Location = System::Drawing::Point(41, 206);
+			this->txtUsername->Name = L"txtUsername";
+			this->txtUsername->Size = System::Drawing::Size(100, 20);
+			this->txtUsername->TabIndex = 17;
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoScroll = true;
-			this->ClientSize = System::Drawing::Size(189, 298);
+			this->ClientSize = System::Drawing::Size(187, 346);
+			this->Controls->Add(this->butSetInfor);
 			this->Controls->Add(this->butChangePass);
 			this->Controls->Add(this->lbOnlineUser);
 			this->Controls->Add(this->labOnline);
 			this->Controls->Add(this->butDisconnect);
 			this->Controls->Add(this->txtUsername);
-			this->Controls->Add(this->labName);
 			this->Controls->Add(this->labInfo);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->MaximizeBox = false;
@@ -144,10 +143,6 @@ namespace Client {
 
 		}
 #pragma endregion
-	private: System::Void label1_Click(System::Object^ sender, System::EventArgs^ e) {
-	}
-	private: System::Void label3_Click(System::Object^ sender, System::EventArgs^ e) {
-	}
 	private: System::Void MainScreen_Load(System::Object^ sender, System::EventArgs^ e);
 	//private: System::Void butSend_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void MainScreen_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e);
@@ -160,5 +155,6 @@ namespace Client {
 	private: System::Void butDisconnect_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void MainScreen_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e);
 	private: System::Void butChangePass_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void butSetInfor_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }

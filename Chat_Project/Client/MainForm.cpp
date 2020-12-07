@@ -5,18 +5,15 @@ using namespace Client;
 
 System::Void MainScreen::MainScreen_Load(System::Object^ sender, System::EventArgs^ e)
 {
-	//MessageBox::Show("Main Screen Loading!");
 	txtUsername->Text = AppController::getObject()->strUsername;
 	AppController::getObject()->createThreadListenMessageFromServer();
 	AppController::getObject()->requestListOnlineUsers();
-
-	//UpdateOnlineUsers();
 }
 
 
 System::Void MainScreen::MainScreen_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e)
 {
-	AppController::getObject()->logout(); //Logout from server before exit
+	AppController::getObject()->logout(); 
 }
 
 
@@ -35,7 +32,6 @@ void MainScreen::DeleteAnOnlineUser(String^ username)
 	for (int i = 0; i < lbOnlineUser->Items->Count; ++i)
 		if (lbOnlineUser->Items[i]->ToString() == username)
 		{
-			//MessageBox::Show("Remove " + )
 			lbOnlineUser->Items->Remove(lbOnlineUser->Items[i]);
 			break;
 		}
@@ -48,7 +44,6 @@ void MainScreen::SetOnlineUsers(array<String^>^ arrOnlineUsers)
 	String^ myUsername = AppController::getObject()->strUsername;
 	for each (String ^ user in arrOnlineUsers)
 	{
-		//MessageBox::Show("Client: " + user);
 		if (user != myUsername)
 			lbOnlineUser->Items->Add(user);
 	}
@@ -86,4 +81,11 @@ System::Void MainScreen::butChangePass_Click(System::Object^ sender, System::Eve
 	AppController::getObject()->changePasswordScreen = gcnew Client::ChangePasswordScreen;
 	//AppController::getObject()->changePasswordScreen->ShowDialog();
 	AppController::getObject()->changePasswordScreen->Show();
+}
+
+System::Void Client::MainScreen::butSetInfor_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	AppController::getObject()->setInforScreen = gcnew Client::SetInfor;
+	//AppController::getObject()->changePasswordScreen->ShowDialog();
+	AppController::getObject()->setInforScreen->Show();
 }

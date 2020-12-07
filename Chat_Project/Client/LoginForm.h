@@ -1,6 +1,5 @@
 #pragma once
 
-//#include "MainScreen.h"
 
 namespace Client {
 	ref class LoginScreen;
@@ -81,6 +80,7 @@ namespace Client {
 			this->butLogin->Click += gcnew System::EventHandler(this, &LoginScreen::butLogin_Click);
 			this->txtPassword->Location = System::Drawing::Point(15, 64);
 			this->txtPassword->Name = L"txtPassword";
+			this->txtPassword->PasswordChar = 42;
 			this->txtPassword->Size = System::Drawing::Size(175, 20);
 			this->txtPassword->TabIndex = 14;
 			this->labPassword->AutoSize = true;

@@ -11,6 +11,7 @@ ref class AppController;
 #include "ChatForm.h"
 #include "ChangePasswordForm.h"
 #include "ConnectServer.h"
+#include "SetInfor.h"
 //Singleton pattern
 
 using namespace System::Threading;
@@ -29,6 +30,7 @@ public:
 	Client::LoginScreen^ loginScreen = nullptr;
 	Client::MainScreen^ mainScreen = nullptr;
 	Client::ChangePasswordScreen^ changePasswordScreen = nullptr;
+	Client::SetInfor^ setInforScreen = nullptr;
 	List<Client::PrivateChat^>^ lstPrivateChatForm = gcnew List<Client::PrivateChat^>();
 	String^ strUsername;
 
@@ -47,6 +49,8 @@ public:
 	int requestSendFile(String^ _ToUsername, String^ _FileName, int _iFileSize);
 	int responseSendFile(String^ _ToUsername, bool _IsAccept);
 	int sendPrivateFile(String^ _ToUsername, String^ _FileName, String^ _FilePath);
+	int setInfor(String^ _Username, String^ _Birthdate);
+	int requestInfor(String^ _friendUsername);
 
 
 	// Set private message to suit form

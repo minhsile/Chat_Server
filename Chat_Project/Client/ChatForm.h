@@ -29,14 +29,14 @@ namespace Client {
 			//
 			//TODO: Add the constructor code here
 			//
-			pathFileToReceiver = System::Reflection::Assembly::GetEntryAssembly()->Location;
+			pathFileToReceiver = splitPathFileToReceiver(System::Reflection::Assembly::GetEntryAssembly()->Location);// day ne 
 		}
 
 		PrivateChat(String^ myUsername, String^ friendUsername) : strMyUsername(myUsername), strFriendUsername(friendUsername)
 		{
 			InitializeComponent();
 			this->Text = "Private Chat With " + strFriendUsername;
-			pathFileToReceiver = System::Reflection::Assembly::GetEntryAssembly()->Location;
+			pathFileToReceiver = splitPathFileToReceiver(System::Reflection::Assembly::GetEntryAssembly()->Location); // day ne qua t 
 		}
 
 	protected:
@@ -64,6 +64,7 @@ namespace Client {
 	private: System::Windows::Forms::Label^ labPath;
 	private: System::Windows::Forms::Label^ labfName;
 	private: System::Windows::Forms::TextBox^ txtfName;
+	private: System::Windows::Forms::Button^ butViewInfor;
 
 	protected:
 
@@ -92,6 +93,7 @@ namespace Client {
 			this->labPath = (gcnew System::Windows::Forms::Label());
 			this->labfName = (gcnew System::Windows::Forms::Label());
 			this->txtfName = (gcnew System::Windows::Forms::TextBox());
+			this->butViewInfor = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			this->butSend->Location = System::Drawing::Point(278, 225);
 			this->butSend->Name = L"butSend";
@@ -111,7 +113,7 @@ namespace Client {
 			this->txtMessage->Name = L"txtMessage";
 			this->txtMessage->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
 			this->txtMessage->Size = System::Drawing::Size(257, 39);
-			this->txtMessage->TabIndex = 7;
+			this->txtMessage->TabIndex = 1;
 			this->DisplayChatBox->Location = System::Drawing::Point(15, 27);
 			this->DisplayChatBox->Multiline = true;
 			this->DisplayChatBox->Name = L"DisplayChatBox";
@@ -143,13 +145,13 @@ namespace Client {
 			this->butFile->Text = L"Choose File";
 			this->butFile->UseVisualStyleBackColor = true;
 			this->butFile->Click += gcnew System::EventHandler(this, &PrivateChat::butFile_Click);
-			this->txtPath->Location = System::Drawing::Point(278, 270);
+			this->txtPath->Location = System::Drawing::Point(223, 270);
 			this->txtPath->Name = L"txtPath";
 			this->txtPath->ReadOnly = true;
-			this->txtPath->Size = System::Drawing::Size(224, 20);
+			this->txtPath->Size = System::Drawing::Size(198, 20);
 			this->txtPath->TabIndex = 21;
 			this->labPath->AutoSize = true;
-			this->labPath->Location = System::Drawing::Point(240, 273);
+			this->labPath->Location = System::Drawing::Point(185, 274);
 			this->labPath->Name = L"labPath";
 			this->labPath->Size = System::Drawing::Size(32, 13);
 			this->labPath->TabIndex = 22;
@@ -164,12 +166,20 @@ namespace Client {
 			this->txtfName->Location = System::Drawing::Point(73, 270);
 			this->txtfName->Name = L"txtfName";
 			this->txtfName->ReadOnly = true;
-			this->txtfName->Size = System::Drawing::Size(161, 20);
+			this->txtfName->Size = System::Drawing::Size(93, 20);
 			this->txtfName->TabIndex = 24;
+			this->butViewInfor->Location = System::Drawing::Point(427, 267);
+			this->butViewInfor->Name = L"butViewInfor";
+			this->butViewInfor->Size = System::Drawing::Size(75, 23);
+			this->butViewInfor->TabIndex = 25;
+			this->butViewInfor->Text = L"View Infor";
+			this->butViewInfor->UseVisualStyleBackColor = true;
+			this->butViewInfor->Click += gcnew System::EventHandler(this, &PrivateChat::butViewInfor_Click);
 			this->AcceptButton = this->butSend;
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(514, 296);
+			this->Controls->Add(this->butViewInfor);
 			this->Controls->Add(this->txtfName);
 			this->Controls->Add(this->labfName);
 			this->Controls->Add(this->labPath);
@@ -210,7 +220,7 @@ namespace Client {
 	private: System::Void label1_Click_2(System::Object^ sender, System::EventArgs^ e) {
 	}
 	private: System::Void butFile_Click(System::Object^ sender, System::EventArgs^ e);
-	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void butViewInfor_Click(System::Object^ sender, System::EventArgs^ e);
 	public: void SetCaption(String^ txtCaption);
 	public: void AddTextToDisplayChatbox(String^ text);
 	private: System::Void butSend_Click(System::Object^ sender, System::EventArgs^ e);
@@ -219,5 +229,6 @@ namespace Client {
 	private: System::Void PrivateChat_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e);
 	//private: System::Void DisplayChatBox_TextChanged(System::Object^  sender, System::EventArgs^  e);
 	public: System::Void ThreadChooseFile();
-	};
+	public: String^ splitPathFileToReceiver(String^ pathFile);
+};
 }

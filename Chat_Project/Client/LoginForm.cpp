@@ -16,7 +16,7 @@ System::Void LoginScreen::LoginScreen_Load(System::Object^ sender, System::Event
 	//{
 	//	Application::Exit(); //Exit app
 	//}
-	txtPassword->PasswordChar = '*';
+	//txtPassword->PasswordChar = '*';
 	AppController::getObject()->createThreadListenMessageFromServer();
 }
 

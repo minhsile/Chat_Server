@@ -87,6 +87,47 @@ bool ServerController::checkAccount(String^ Username, String^ Password)
 
 	return false;
 }
+String^ ServerController::convertStringToHex(String^ input)
+{
+	List<Byte>^ stringBytes = gcnew List<Byte>();
+	stringBytes->AddRange(Encoding::UTF8->GetBytes(input));
+	// Byte[] stringBytes = encoding.GetBytes(input);
+	array<Byte>^ temp = stringBytes->ToArray();
+	StringBuilder^ sbBytes = gcnew StringBuilder(temp->Length * 2);
+	for each (Byte b in temp)
+	{
+		sbBytes->AppendFormat("{0:X2}", b);
+	}
+	return sbBytes->ToString();
+}
+
+String^ ServerController::convertHexToString(String^ hexInput)
+{
+	int numberChars = hexInput->Length;
+	array<Byte>^ bytes = gcnew array<Byte>(numberChars / 2);
+	// byte[] bytes = new byte[numberChars / 2];
+	for (int i = 0; i < numberChars; i += 2)
+	{
+		bytes[i / 2] = Convert::ToByte(hexInput->Substring(i, 2), 16);
+	}
+	return Encoding::UTF8->GetString(bytes);
+}
+
+void ServerController::setInfor(String^ userName, String^ birthDate)
+{
+	array<String^>^ lines = System::IO::File::ReadAllLines(inforPath);
+	for (int i = 0; i < lines->Length; i++)
+	{
+		if (lines[i]->Contains(userName + "|"))
+		//if (lines[i] == userName + "|")
+		{
+			//MessageBox::Show("Hello guy");
+			lines[i] = userName + "|" + birthDate;
+			break;
+		}
+	}
+	System::IO::File::WriteAllLines(inforPath, lines);
+}
 
 bool ServerController::checkSignup(String^ Username, String^ Password, String^& errorMsg)
 {
@@ -170,6 +211,7 @@ bool ServerController::addAnAccountToDatabase(String^ Username, String^ Password
 	try
 	{
 		System::IO::File::AppendAllText(accountPath, Username + "|" + Password + "\n");
+		System::IO::File::AppendAllText(inforPath, Username + "|" + "\n");
 	}
 	catch (Exception^ e)
 	{
@@ -307,14 +349,6 @@ void ServerController::userStatusResponse(Socket^ _ClientSocket)
 {
 	UserStatusStruct^ userStatusStruct = gcnew UserStatusStruct;
 	userStatusStruct->lstOnlineUsers = getListClient()->ToArray();
-
-	/*String^ debug = "";
-	for each (String^ user in userStatusStruct->lstOnlineUsers)
-	{
-		debug += user;
-	}
-	MessageBox::Show(debug);*/
-
 	array<Byte>^ buff = userStatusStruct->pack();
 	_ClientSocket->Send(buff);
 }
@@ -355,22 +389,21 @@ List<String^>^ ServerController::getListClient()
 	{
 		listClient->Add(clientInfo->strUsermame);
 	}
-
 	return listClient;
 }
 
-List<String^>^ ServerController::getRegisteredClientList()
-{
-	array<String^>^ lines = System::IO::File::ReadAllLines(accountPath);
-	List<String^>^ listLines = gcnew List<String^>();
-	for each (String ^ line in lines)
-	{
-
-		listLines->Add(line->Substring(0, line->IndexOf("|")));
-	}
-
-	return listLines;
-}
+//List<String^>^ ServerController::getRegisteredClientList()
+//{
+//	array<String^>^ lines = System::IO::File::ReadAllLines(accountPath);
+//	List<String^>^ listLines = gcnew List<String^>();
+//	for each (String ^ line in lines)
+//	{
+//
+//		listLines->Add(line->Substring(0, line->IndexOf("|")));
+//	}
+//
+//	return listLines;
+//}
 
 void ServerController::requestSendFile(String^ _ToUsername, String^ _FileName, int _iFileSize, Socket^ _ClientSocket)
 {
@@ -395,6 +428,29 @@ void ServerController::responseSendFile(String^ _ToUsername, bool _IsAccept, Soc
 	Socket^ receiver = getSocketByUsername(_ToUsername);
 	array<Byte>^ byteData = rpSendFileStruct->pack();
 	receiver->Send(byteData);
+}
+
+void ServerController::responseInfor(String^ _friendUsername, Socket^ _ClientSocket)
+{
+	array<String^>^ lines = System::IO::File::ReadAllLines(inforPath);
+	String^ BirthDate;
+	for (int i = 0; i < lines->Length; i++)
+	{
+		if (lines[i]->Contains(_friendUsername + "|"))
+		{
+			//MessageBox::Show("Hello guy");
+			BirthDate = lines[i]->Remove(0, _friendUsername->Length + 1);
+			break;
+		}
+	}
+	//System::IO::File::WriteAllLines(inforPath, lines);
+	ResponseInforStruct^ resInfor = gcnew ResponseInforStruct;
+	resInfor->friendUsername = _friendUsername;
+	resInfor->birthDate = BirthDate;
+
+	//Socket^ receiver = getSocketByUsername(_ToUsername);
+	array<Byte>^ buff = resInfor->pack();
+	_ClientSocket->Send(buff);
 }
 
 void ServerController::sendPrivateFilePackage(String^ _ToUsername, String^ _Filename, int _iPackageNumber, int _TotalPackage, array<Byte>^ _bData, Socket^ _ClientSocket)

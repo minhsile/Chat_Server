@@ -20,12 +20,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Resource.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="MainForm.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -35,24 +29,30 @@
     <ClInclude Include="ChatForm.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Client.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="ConnectServer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="ChangePasswordForm.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Controller.h">
+      <Filter>Quelldateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Client.h">
+      <Filter>Quelldateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Ressourcendateien</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Ressourcendateien</Filter>
+    </ClInclude>
+    <ClInclude Include="SetInfor.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="LoginForm.cpp">
@@ -77,6 +77,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="ChangePasswordForm.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Ressourcendateien</Filter>
+    </ClCompile>
+    <ClCompile Include="SetInfor.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

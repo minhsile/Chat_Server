@@ -33,6 +33,7 @@ public:
 
 	//Database
 	String^ accountPath = "../Server/Database/accounts.txt";
+	String^ inforPath = "../Server/Database/infor.txt";
 
 	//Form
 	Server::MainForm^ mainForm;
@@ -51,6 +52,9 @@ public:
 	bool checkChangePass(String^ Username, String^ Password, String^ newPassword, String^ confirmnewPassword, String^& errorMsg);
 	bool checkAccountExists(String^ Username);
 	bool addAnAccountToDatabase(String^ Username, String^ Password);
+	static String^ convertStringToHex(String^ input);
+	static String^ convertHexToString(String^ hexInput);
+	void setInfor(String^ userName, String^ birthDate);
 
 	//Main calling
 	bool login(String^ Username, String^ Password, Socket^ _ClientSocket);
@@ -64,6 +68,7 @@ public:
 	void sendLogoutNotification(Socket^ _ClientSocket);
 	void requestSendFile(String^ _ToUsername, String^ _FileName, int _iFileSize, Socket^ _ClientSocket);
 	void responseSendFile(String^ _ToUsername, bool _IsAccept, Socket^ _ClientSocket);
+	void responseInfor(String^ _friendUsername, Socket^ _ClientSocket);
 	void sendPrivateFilePackage(String^ _ToUsername, String^ _Filename, int _iPackageNumber, int _TotalPackage, array<Byte>^ _bData, Socket^ _ClientSocket);
 
 	//int sendPublicMsgToClients(String^ _strMessage, Socket^ _ClientSocket);
@@ -73,7 +78,7 @@ public:
 
 	//Others
 	List<String^>^ getListClient();
-	List<String^>^ getRegisteredClientList();
+	//List<String^>^ getRegisteredClientList();
 	String^ getUsernameBySocket(Socket^ _socket);
 	Socket^ getSocketByUsername(String^ Username);
 	void removeClientInfoByUsername(String^ Username);

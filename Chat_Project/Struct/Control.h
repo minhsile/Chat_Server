@@ -13,7 +13,9 @@
 #include "ResponseChangePassword.h"
 #include "LoginNotification.h"
 #include "LogoutNotification.h"
-
+#include "SetInfor.h"
+#include "RequestInfor.h"
+#include "ResponseInfor.h"
 ref class ChatControl
 {
 public:
@@ -84,21 +86,33 @@ public:
 			result->unpack(buff);
 			break;
 		case ChatStruct::MessageType::LoginNotification:
-				result = gcnew LoginNotificationStruct();
-				result->messageType = ChatStruct::MessageType::LoginNotification;
-				result->unpack(buff);
-
-				break;
+			result = gcnew LoginNotificationStruct();
+			result->messageType = ChatStruct::MessageType::LoginNotification;
+			result->unpack(buff);
+			break;
 		case ChatStruct::MessageType::LogoutNotification:
-				result = gcnew LogoutNotificationStruct();
-				result->messageType = ChatStruct::MessageType::LogoutNotification;
-				result->unpack(buff);
-				break;
-
+			result = gcnew LogoutNotificationStruct();
+			result->messageType = ChatStruct::MessageType::LogoutNotification;
+			result->unpack(buff);
+			break;
+		case ChatStruct::MessageType::SetInfor:
+			result = gcnew SetInformationStruct();
+			result->messageType = ChatStruct::MessageType::SetInfor;
+			result->unpack(buff);
+			break;
+		case ChatStruct::MessageType::RequestInfor:
+			result = gcnew RequestInforStruct();
+			result->messageType = ChatStruct::MessageType::RequestInfor;
+			result->unpack(buff);
+			break;
+		case ChatStruct::MessageType::ResponseInfor:
+			result = gcnew ResponseInforStruct();
+			result->messageType = ChatStruct::MessageType::ResponseInfor;
+			result->unpack(buff);
+			break;
 		default:
 			break;
 		}
-
 		return result;
 	}
 };

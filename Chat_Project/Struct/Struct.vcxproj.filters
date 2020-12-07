@@ -77,6 +77,15 @@
     <ClInclude Include="ResponseSendFile.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="SetInfor.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="ResponseInfor.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestInfor.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CppCLR_WinformsProjekt.cpp">
