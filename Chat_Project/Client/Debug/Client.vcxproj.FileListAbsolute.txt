@@ -6,3 +6,4 @@ C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Client\Debug\Client.Se
 C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Client\Debug\Client.vcxproj.GenerateResource.cache
 C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Client\Debug\Client.LoginForm.resources
 C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Client\Debug\Client.ChatForm.resources
+C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Client\Debug\Client.vcxprojAssemblyReference.cache

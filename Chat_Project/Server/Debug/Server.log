@@ -1,8 +1,5 @@
 ﻿  MainForm.cpp
-C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Server\MainForm.cpp(113,21): warning C4101: 'e': unreferenced local variable
-  Server.cpp
-C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Server\Server.cpp(216,20): warning C4101: 'e': unreferenced local variable
-  Generating Code...
+C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Server\MainForm.cpp(130,21): warning C4101: 'e': unreferenced local variable
   AssemblyInfo.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
   Server.vcxproj -> C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Debug\Server.exe
   Server.vcxproj -> C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Debug\Server.pdb (Partial -> Full PDB)

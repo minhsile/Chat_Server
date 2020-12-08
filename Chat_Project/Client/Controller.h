@@ -33,16 +33,18 @@ public:
 	Client::SetInfor^ setInforScreen = nullptr;
 	List<Client::PrivateChat^>^ lstPrivateChatForm = gcnew List<Client::PrivateChat^>();
 	String^ strUsername;
+	bool isEncryptedLogin = false;
+	bool isEncryptedSignup = false;
+	bool isEncryptedChangePassword = false;
 
-	//static void ListenMessage(Object^ obj);
 	System::Void ListenMessage();
-	//void ListenMessage(Object^ obj);
 	int createThreadListenMessageFromServer();
 
 	int login(String^ _Username, String^ _Password);
 	int changePassword(String^ Username, String^ oldPassword, String^ newPassword, String^ confirmnewPassword);
 	int logout();
 	int signup(String^ _Username, String^ _Password);
+	static String^ convertStringToHex(String^ input);
 //	int sendPublicMessage(String^ _Message);
 	int sendPrivateMessage(String^ _ToUsername, String^ _Message);
 	int requestListOnlineUsers();

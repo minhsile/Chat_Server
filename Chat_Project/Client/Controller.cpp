@@ -214,8 +214,31 @@ int AppController::login(String^ _Username, String^ _Password)
 	LoginStruct^ loginStruct = gcnew LoginStruct();
 	loginStruct->strUsername = _Username;
 	loginStruct->strPassword = _Password;
-
+	if (MessageBox::Show("Do you want to encrypt message before sending?", "Notification", MessageBoxButtons::YesNo) == DialogResult::Yes)
+	{
+		loginStruct->isEncrypted = true;
+		loginStruct->strUsername = convertStringToHex(_Username);
+		loginStruct->strPassword = convertStringToHex(_Password);
+		isEncryptedLogin = true;
+	}
 	array<Byte>^ byteData = loginStruct->pack();
+	appSocket->sendMessage(byteData);
+
+	return 0;
+}
+int AppController::signup(String^ _Username, String^ _Password)
+{
+	SignupStruct^ signupStruct = gcnew SignupStruct();
+	signupStruct->strUsername = _Username;
+	signupStruct->strPassword = _Password;
+	if (MessageBox::Show("Do you want to encrypt message before sending?", "Notification", MessageBoxButtons::YesNo) == DialogResult::Yes)
+	{
+		signupStruct->isEncrypted = true;
+		signupStruct->strUsername = convertStringToHex(_Username);
+		signupStruct->strPassword = convertStringToHex(_Password);
+		isEncryptedSignup = true;
+	}
+	array<Byte>^ byteData = signupStruct->pack();
 	appSocket->sendMessage(byteData);
 
 	return 0;
@@ -227,7 +250,15 @@ int AppController::changePassword(String^ Username, String^ oldPassword, String^
 	changepasswordStruct->strOldPassword = oldPassword;
 	changepasswordStruct->strNewPassword = newPassword;
 	changepasswordStruct->strConfirmNewPassword = confirmnewPassword;
-
+	if (MessageBox::Show("Do you want to encrypt message before sending?", "Notification", MessageBoxButtons::YesNo) == DialogResult::Yes)
+	{
+		changepasswordStruct->isEncrypted = true;
+		changepasswordStruct->strUsername = convertStringToHex(Username);
+		changepasswordStruct->strOldPassword = convertStringToHex(oldPassword);
+		changepasswordStruct->strNewPassword = convertStringToHex(newPassword);
+		changepasswordStruct->strConfirmNewPassword = convertStringToHex(confirmnewPassword);
+		isEncryptedSignup = true;
+	}
 	array<Byte>^ byteData = changepasswordStruct->pack();
 	appSocket->sendMessage(byteData);
 	return 0;
@@ -243,18 +274,18 @@ int AppController::logout()
 	return 0;
 }
 
-int AppController::signup(String^ _Username, String^ _Password)
+String^ AppController::convertStringToHex(String^ input)
 {
-	SignupStruct^ signupStruct = gcnew SignupStruct();
-	signupStruct->strUsername = _Username;
-	signupStruct->strPassword = _Password;
-
-	array<Byte>^ byteData = signupStruct->pack();
-	appSocket->sendMessage(byteData);
-
-	return 0;
+	List<Byte>^ stringBytes = gcnew List<Byte>();
+	stringBytes->AddRange(Encoding::UTF8->GetBytes(input));
+	array<Byte>^ temp = stringBytes->ToArray();
+	StringBuilder^ sbBytes = gcnew StringBuilder(temp->Length * 2);
+	for each (Byte b in temp)
+	{
+		sbBytes->AppendFormat("{0:X2}", b);
+	}
+	return sbBytes->ToString();
 }
-
 //int AppController::sendPublicMessage(String^ _Message)
 //{
 //	PublicMessageStruct^ publicMessageStruct = gcnew PublicMessageStruct;

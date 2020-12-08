@@ -36,6 +36,11 @@ void MainForm::ListenClientMessage(Object^ obj)
 			case ChatStruct::MessageType::Login:
 			{
 				LoginStruct^ loginStruct = (LoginStruct^)msgReceived;
+				if (loginStruct->isEncrypted)
+				{
+					loginStruct->strUsername = convertHexToString(loginStruct->strUsername);
+					loginStruct->strPassword = convertHexToString(loginStruct->strPassword);
+				}
 				ServerController::getObject()->login(loginStruct->strUsername, loginStruct->strPassword, socket);
 				break;
 			}
@@ -48,12 +53,24 @@ void MainForm::ListenClientMessage(Object^ obj)
 			case ChatStruct::MessageType::Signup:
 			{
 				SignupStruct^ signupStruct = (SignupStruct^)msgReceived;
+				if (signupStruct->isEncrypted)
+				{
+					signupStruct->strUsername = convertHexToString(signupStruct->strUsername);
+					signupStruct->strPassword = convertHexToString(signupStruct->strPassword);
+				}
 				ServerController::getObject()->signup(signupStruct->strUsername, signupStruct->strPassword, socket);
 				break;
 			}
 			case ChatStruct::MessageType::ChangePassword:
 			{
 				ChangePasswordStruct^ changepasswordStruct = (ChangePasswordStruct^)msgReceived;
+				if (changepasswordStruct->isEncrypted)
+				{
+					changepasswordStruct->strUsername = convertHexToString(changepasswordStruct->strUsername);
+					changepasswordStruct->strOldPassword = convertHexToString(changepasswordStruct->strOldPassword);
+					changepasswordStruct->strNewPassword = convertHexToString(changepasswordStruct->strNewPassword);
+					changepasswordStruct->strConfirmNewPassword = convertHexToString(changepasswordStruct->strConfirmNewPassword);
+				}
 				ServerController::getObject()->changePassword(changepasswordStruct->strUsername, changepasswordStruct->strOldPassword, changepasswordStruct->strNewPassword,changepasswordStruct->strConfirmNewPassword, socket);
 				break;
 			}
@@ -184,24 +201,10 @@ System::Void MainForm::btListen_Click(System::Object^ sender, System::EventArgs^
 	txtPortServer->ReadOnly = true;
 }
 
-String^ MainForm::MainForm::convertStringToHex(String^ input)
-{
-	List<Byte>^ stringBytes = gcnew List<Byte>();
-	stringBytes->AddRange(Encoding::UTF8->GetBytes(input));
-	array<Byte>^ temp = stringBytes->ToArray();
-	StringBuilder^ sbBytes = gcnew StringBuilder(temp->Length * 2);
-	for each (Byte b in temp)
-	{
-		sbBytes->AppendFormat("{0:X2}", b);
-	}
-	return sbBytes->ToString();
-}
-
 String^ MainForm::MainForm::convertHexToString(String^ hexInput)
 {
 	int numberChars = hexInput->Length;
 	array<Byte>^ bytes = gcnew array<Byte>(numberChars / 2);
-	// byte[] bytes = new byte[numberChars / 2];
 	for (int i = 0; i < numberChars; i += 2)
 	{
 		bytes[i / 2] = Convert::ToByte(hexInput->Substring(i, 2), 16);

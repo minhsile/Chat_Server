@@ -52,8 +52,6 @@ public:
 	bool checkChangePass(String^ Username, String^ Password, String^ newPassword, String^ confirmnewPassword, String^& errorMsg);
 	bool checkAccountExists(String^ Username);
 	bool addAnAccountToDatabase(String^ Username, String^ Password);
-	static String^ convertStringToHex(String^ input);
-	static String^ convertHexToString(String^ hexInput);
 	void setInfor(String^ userName, String^ birthDate);
 
 	//Main calling

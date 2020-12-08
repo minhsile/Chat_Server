@@ -8,6 +8,7 @@ public:
 	String^ strOldPassword;
 	String^ strNewPassword;
 	String^ strConfirmNewPassword;
+	bool isEncrypted;
 
 	ChangePasswordStruct()
 	{
@@ -15,6 +16,7 @@ public:
 		strOldPassword = nullptr;
 		strNewPassword = nullptr;
 		strConfirmNewPassword = nullptr;
+		isEncrypted = false;
 	}
 	virtual array<Byte>^ pack() override
 	{
@@ -54,7 +56,8 @@ public:
 		}
 		else
 			byteData->AddRange(BitConverter::GetBytes(0));
-		//Return
+		//add bool encrypted
+		byteData->AddRange(BitConverter::GetBytes(isEncrypted));
 		return byteData->ToArray();
 	}
 
@@ -87,6 +90,8 @@ public:
 		if (confirmnewpasswordLength > 0)
 			strConfirmNewPassword = Encoding::UTF8->GetString(buff, offset, confirmnewpasswordLength);
 
+		offset += confirmnewpasswordLength;//Update offset
+		isEncrypted = BitConverter::ToBoolean(buff, offset);
 		return this;
 	}
 };

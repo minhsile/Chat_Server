@@ -6,11 +6,13 @@ ref class LoginStruct : public ChatStruct
 public:
 	String^ strUsername;
 	String^ strPassword;
+	bool isEncrypted;
 
 	LoginStruct()
 	{
 		strUsername = nullptr;
 		strPassword = nullptr;
+		isEncrypted = false;
 	}
 	virtual array<Byte>^ pack() override
 	{
@@ -36,7 +38,9 @@ public:
 		else
 			byteData->AddRange(BitConverter::GetBytes(0));
 
-		//Return
+		//add bool encrypted
+		byteData->AddRange(BitConverter::GetBytes(isEncrypted));
+
 		return byteData->ToArray();
 	}
 
@@ -56,7 +60,8 @@ public:
 		offset += 4; //Update offset
 		if (passwordLength > 0)
 			strPassword = Encoding::UTF8->GetString(buff, offset, passwordLength);
-
+		offset += passwordLength;
+		isEncrypted = BitConverter::ToBoolean(buff, offset);
 		return this;
 	}
 };

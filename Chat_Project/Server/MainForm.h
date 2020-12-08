@@ -162,7 +162,6 @@ namespace Server {
 	private: System::Void backgroundWorker1_DoWork(System::Object^ sender, System::ComponentModel::DoWorkEventArgs^ e);
 	public: void AddTextToContent(String^ text);
 	public: void UpdateConnectedClient(List<String^>^ lstClient);
-	public:static String^ convertStringToHex(String^ input);
 	public:static String^ convertHexToString(String^ hexInput);
 	//public: void UpdateClientList(List<String^>^ lstClient);
 	private: System::Void btListen_Click(System::Object^ sender, System::EventArgs^ e);
