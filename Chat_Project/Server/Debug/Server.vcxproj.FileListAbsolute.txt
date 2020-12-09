@@ -4,3 +4,6 @@ C:\Users\IBM\Desktop\Chat_Project\Server\Debug\Server.vcxproj.GenerateResource.c
 C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Server\Debug\Server.MainForm.resources
 C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Server\Debug\Server.vcxproj.GenerateResource.cache
 C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Server\Debug\Server.vcxprojAssemblyReference.cache
+D:\Github\Chat_Server\Chat_Project\Server\Debug\Server.vcxprojAssemblyReference.cache
+D:\Github\Chat_Server\Chat_Project\Server\Debug\Server.MainForm.resources
+D:\Github\Chat_Server\Chat_Project\Server\Debug\Server.vcxproj.GenerateResource.cache
