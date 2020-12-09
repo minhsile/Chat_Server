@@ -5,7 +5,7 @@ using namespace Client;
 
 System::Void MainScreen::MainScreen_Load(System::Object^ sender, System::EventArgs^ e)
 {
-	txtUsername->Text = AppController::getObject()->strUsername;
+	//txtUsername->Text = AppController::getObject()->strUsername;
 	AppController::getObject()->createThreadListenMessageFromServer();
 	AppController::getObject()->requestListOnlineUsers();
 }
@@ -21,7 +21,10 @@ void MainScreen::UpdateOnlineUsers()
 {
 
 }
-
+System::Void MainScreen::butShowInfor_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	AppController::getObject()->requestInfor(AppController::getObject()->strUsername);
+}
 void MainScreen::AddAnOnlineUser(String^ username)
 {
 	lbOnlineUser->Items->Add(username);
