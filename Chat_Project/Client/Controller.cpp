@@ -1,6 +1,8 @@
 #include"pch.h"
 #include "Controller.h"
 #define NULL 0
+#define DEFAULT_BUFFER_LENGTH 10752
+#define BUFFER_SIZE 10240
 using namespace System::IO;
 
 AppController::AppController() //Don't allow to create object
@@ -26,7 +28,7 @@ System::Void AppController::ListenMessage()
 {
 	while (true)
 	{
-		array<Byte>^ buff = gcnew array<Byte>(1024);
+		array<Byte>^ buff = gcnew array<Byte>(DEFAULT_BUFFER_LENGTH);
 		Socket^ clientSocket = AppController::getObject()->appSocket->clientSocket;
 		int revc;
 		try
@@ -194,6 +196,43 @@ System::Void AppController::ListenMessage()
 			MessageBox::Show("Name: " + resInfor->friendUsername + "\nBirthdate: " + resInfor->birthDate, "Information");
 			break;
 		}
+		case ChatStruct::MessageType::ListPublicFileName:
+		{
+			ListPublicFileNameStruct^ fileName = (ListPublicFileNameStruct^)msgReceived;
+			if (fileName->listFileName != nullptr)
+				AppController::getObject()->publicFileScreen->SetListFileName(fileName->listFileName);
+
+			break;
+		}
+		case ChatStruct::MessageType::DownloadPublicFile:
+		{
+			DownloadPublicFileStruct^ pubFile = (DownloadPublicFileStruct^)msgReceived;
+			try {
+
+				if (pubFile->iPackageNumber == 1) {
+					AppController::getObject()->publicFileScreen->setUpProcessBar(1, pubFile->iTotalPackage);//
+					AppController::getObject()->createThreadListenMessageFromServer();
+					AppController::getObject()->publicFileScreen->writerStream = gcnew System::IO::FileStream(AppController::getObject()->publicFileScreen->pathFileToReceiver + AppController::getObject()->publicFileScreen->fileNameToReceive, System::IO::FileMode::Create, System::IO::FileAccess::Write);
+				}
+				AppController::getObject()->publicFileScreen->writerStream->Write(pubFile->bData, 0, pubFile->bData->Length);
+				AppController::getObject()->publicFileScreen->setValueOfProcessBar(pubFile->iPackageNumber);//
+				if (pubFile->iPackageNumber == pubFile->iTotalPackage) {
+					AppController::getObject()->publicFileScreen->resetProcessBar();//
+					if (pubFile->iFileSize == (int)AppController::getObject()->publicFileScreen->writerStream->Length)
+						MessageBox::Show("Downloaded " + pubFile->fileName + "(" + Convert::ToString(pubFile->iFileSize) + ") bytes successfully!", "Notification");
+					else
+						MessageBox::Show("Downloaded " + pubFile->fileName + "(" + Convert::ToString(pubFile->iFileSize) + ") bytes (missed " + Convert::ToString(pubFile->iFileSize - (int)AppController::getObject()->publicFileScreen->writerStream->Length) + "bytes)!", "Notification");
+					AppController::getObject()->publicFileScreen->writerStream->Close();
+					AppController::getObject()->publicFileScreen->writerStream = nullptr;
+				}
+
+			}
+
+			catch (Exception^ e) {
+				MessageBox::Show(e->Message, "Error Client(Receive Public File)");
+			}
+			break;
+		}
 		default:
 			break;
 		}
@@ -319,6 +358,15 @@ int AppController::requestListOnlineUsers()
 	return 0;
 }
 
+int AppController::requestListPublicFileName()
+{
+	ListPublicFileNameStruct^ fileName = gcnew ListPublicFileNameStruct();
+	array<Byte>^ byteData = fileName->pack();
+	appSocket->sendMessage(byteData);
+
+	return 0;
+}
+
 int AppController::requestSendFile(String^ _ToUsername, String^ _FileName, int _iFileSize)
 {
 	RequestSendFileStruct^ rqSendFileStruct = gcnew RequestSendFileStruct;
@@ -346,17 +394,12 @@ int AppController::sendPrivateFile(String^ _ToUsername, String^ _FileName, Strin
 	PrivateFileStruct^ prvFileStruct = gcnew PrivateFileStruct;
 	prvFileStruct->strFilename = _FileName;
 	prvFileStruct->strUsername = _ToUsername;
-	//Spit to smaller packages to send to server
-
 	array<Byte>^ buffer;
 
 	FileStream^ fileStream = nullptr;
-	//FileStream^ writeSteam = nullptr;
 	try
 	{
 		fileStream = gcnew FileStream(_FilePath, FileMode::Open, FileAccess::Read);
-		//writeSteam = gcnew FileStream("Debug/" + _FilePath, FileMode::Create, FileAccess::Write);
-
 		int length = (int)fileStream->Length;  // get file length
 		buffer = gcnew array<Byte>(length);            // create buffer
 
@@ -432,6 +475,68 @@ int AppController::requestInfor(String^ _friendUsername)
 	return 0;
 }
 
+void AppController::uploadPublicFileToServer(String^ filePath, String^ fileName)
+{
+	UploadPublicFileStruct^ pubFile = gcnew UploadPublicFileStruct();
+
+	array<Byte>^ buffer = System::IO::File::ReadAllBytes(filePath);
+	pubFile->fileName = fileName;
+	pubFile->iFileSize = buffer->Length;
+	int check = 0;
+	try
+	{
+		int counter = 0;
+		int curPackageNumber = 1;
+		int sum = buffer->Length;
+		int iTotalPackage = buffer->Length / BUFFER_SIZE + 1;
+		AppController::getObject()->publicFileScreen->setUpProcessBar(1, iTotalPackage);
+		pubFile->iTotalPackage = iTotalPackage;
+		for (; curPackageNumber <= iTotalPackage; curPackageNumber++)
+		{
+			//MessageBox::Show("Pack:" + Convert::ToString(curPackageNumber));
+			Thread::Sleep(5);
+			int copyLength = BUFFER_SIZE < sum ? BUFFER_SIZE : (sum % BUFFER_SIZE);
+			sum -= copyLength;
+			array<Byte>^ bData = gcnew array<Byte>(copyLength);
+			System::Array::Copy(buffer, counter, bData, 0, copyLength);
+			counter += copyLength;
+
+			pubFile->bData = bData;
+			check += bData->Length;
+			pubFile->iPackageNumber = curPackageNumber;
+			//pubFile->iTotalPackage = iTotalPackage;
+			array<Byte>^ byteData = pubFile->pack();
+			AppController::getObject()->appSocket->sendMessage(byteData);
+			AppController::getObject()->publicFileScreen->setValueOfProcessBar(curPackageNumber);
+			//delete[] pubFile->bData;
+			delete[] bData;
+		}
+	}
+	catch (Exception^ e)
+	{
+		MessageBox::Show(e->Message, "Send public file");
+	}
+	finally
+	{
+		AppController::getObject()->requestListPublicFileName();
+		AppController::getObject()->publicFileScreen->resetProcessBar();
+		if (check == buffer->Length)
+			MessageBox::Show("Uploaded " + fileName + "(" + Convert::ToString(check) + ") bytes sucessfully!", "Notification");
+
+		delete[] buffer;
+	}
+
+}
+
+int AppController::requestDownloadPublicFile(String^ fileName)
+{
+	RequestSendPublicFileStruct^ rqFile = gcnew RequestSendPublicFileStruct();
+	rqFile->fileName = fileName;
+	array<Byte>^ byteData = rqFile->pack();
+	appSocket->sendMessage(byteData);
+	return 0;
+}
+
 int AppController::setPrivateMessage(String^ _ToUsername, String^ _Message)
 {
 	Client::PrivateChat^ prvChatForm = getPrivateChatFormByFriendUsername(_ToUsername);
@@ -446,9 +551,6 @@ int AppController::setPrivateMessage(String^ _ToUsername, String^ _Message)
 		setPrivateMessage(_ToUsername, _Message); //Re set private message
 
 		Application::Run(pChat);
-		//threadListenClient = gcnew Thread(gcnew ParameterizedThreadStart(AppController::threadPrivateChatForm));
-		//threadListenClient->IsBackground = true;
-		//threadListenClient->Start(pChat);
 	}
 
 	return 0;
@@ -468,11 +570,7 @@ Client::PrivateChat^ AppController::getPrivateChatFormByFriendUsername(String^ _
 void AppController::threadPrivateChatForm(Object^ obj)
 {
 	MessageBox::Show("Debug thread");
-	//How can I know my friend chat username. -> Solved!
 	Client::PrivateChat^ pChat = (Client::PrivateChat^)obj;
-	//Application::Run(pChat);
-	//createThreadListenMessageFromServer();
-	//MessageBox::Show("Debug");
 	pChat->Show();
 	MessageBox::Show("End Debug thread");
 }

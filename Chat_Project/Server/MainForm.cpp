@@ -26,7 +26,7 @@ void MainForm::ListenClientMessage(Object^ obj)
 	{
 		try
 		{
-			array<Byte>^ buff = gcnew array<Byte>(1024);
+			array<Byte>^ buff = gcnew array<Byte>(DEFAULT_BUFFER_LENGTH);
 			int recv = socket->Receive(buff);
 			//MessageBox::Show("Received: " + Convert::ToString(recv) + " bytes from Client!");
 			ChatStruct^ msgReceived = ChatControl::unpack(buff);
@@ -120,6 +120,67 @@ void MainForm::ListenClientMessage(Object^ obj)
 			{
 				RequestInforStruct^ rpSendFileStruct = (RequestInforStruct^)msgReceived;
 				ServerController::getObject()->responseInfor(rpSendFileStruct->friendUsername, socket);
+				break;
+			}
+			case ChatStruct::MessageType::ListPublicFileName:
+			{
+				ServerController::getObject()->listFileNameResponse(socket);
+				break;
+			}
+			case ChatStruct::MessageType::UploadPublicFile:
+			{
+				UploadPublicFileStruct^ pubFile = (UploadPublicFileStruct^)msgReceived;
+				try {
+
+					if (pubFile->iPackageNumber == 1) {
+					//	MessageBox::Show(Convert::ToString(pubFile->iPackageNumber)); //Delete
+						ServerController::getObject()->addFileName(pubFile->fileName);
+						ServerController::getObject()->fileStream = gcnew System::IO::FileStream(ServerController::getObject()->filePath + pubFile->fileName, System::IO::FileMode::Create, System::IO::FileAccess::Write);
+						ServerController::getObject()->fileSize = pubFile->iFileSize;
+					}
+
+					ServerController::getObject()->fileStream->Write(pubFile->bData, 0, pubFile->bData->Length);
+					//System::IO::File::WriteAllBytes(ServerController::getObject()->filePath + pubFile->fileName, pubFile->bData);
+
+					if (pubFile->iPackageNumber == pubFile->iTotalPackage)
+					{
+					//	MessageBox::Show(Convert::ToString(pubFile->iPackageNumber)); //Delete
+						if ((int)ServerController::getObject()->fileStream->Length == pubFile->iFileSize)
+							ServerController::getObject()->mainForm->AddTextToContent(ServerController::getObject()->getUsernameBySocket(socket) + " sent " + pubFile->fileName + "(" + Convert::ToString(pubFile->iFileSize) + ")bytes successfully!");
+						else
+							ServerController::getObject()->mainForm->AddTextToContent(ServerController::getObject()->getUsernameBySocket(socket) + " sent " + pubFile->fileName + "(" + Convert::ToString((int)ServerController::getObject()->fileStream->Length) + ")bytes (missed " + Convert::ToString(pubFile->iFileSize - (int)ServerController::getObject()->fileStream->Length) + "bytes)");
+
+						ServerController::getObject()->fileStream->Close();
+						ServerController::getObject()->fileStream = nullptr;
+					}
+				}
+				catch (Exception^ e) {
+					//ServerController::getObject()->fileStream->Close();
+					//ServerController::getObject()->fileStream = nullptr;
+					MessageBox::Show(e->Message, "Error ServerController(Receive Public File)");
+					//continue;
+				}
+
+				break;
+
+			}
+			case ChatStruct::MessageType::RequestSendPublicFile:
+			{
+				try {
+					RequestSendPublicFileStruct^ pubFile = (RequestSendPublicFileStruct^)msgReceived;
+					ServerController::getObject()->sendPublicFile(pubFile->fileName, socket);
+					if (ServerController::getObject()->fileStream != nullptr) {
+						ServerController::getObject()->fileStream->Close();
+						ServerController::getObject()->fileStream = nullptr;
+					}
+
+				}
+				catch (Exception^ e) {
+
+					ServerController::getObject()->fileStream->Close();
+					ServerController::getObject()->fileStream = nullptr;
+					MessageBox::Show(e->Message, "Error ServerController(Send Public File)");
+				}
 				break;
 			}
 			default:

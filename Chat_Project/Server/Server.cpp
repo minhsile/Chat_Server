@@ -36,6 +36,75 @@ int ServerController::createSocket()
 //Helper
 
 
+bool ServerController::addFileName(String^ fileName)
+{
+	try {
+		array<String^>^ lines = System::IO::File::ReadAllLines(fileNamePath);
+		for (int i = 0; i < lines->Length; i++)
+		{
+			if (lines[i]->Contains(fileName))
+			{
+				return false;
+			}
+		}
+		System::IO::File::AppendAllText(this->fileNamePath, fileName + "\n");
+	}
+	catch (Exception^ e) {
+		return false;
+	}
+
+	return true;
+}
+
+void ServerController::sendPublicFile(String^ fileName, Socket^ clientSocket)
+{
+	array<Byte>^ buffer = System::IO::File::ReadAllBytes(filePath + fileName);
+	DownloadPublicFileStruct^ pubFile = gcnew DownloadPublicFileStruct();
+	pubFile->fileName = fileName;
+	pubFile->iFileSize = buffer->Length;
+	int check = 0;
+	int sum = buffer->Length;
+	int counter = 0;
+	int curPackageNumber = 1;
+	int iTotalPackage = sum / (BUFFER_SIZE + 1) + 1;
+	for (; curPackageNumber <= iTotalPackage; ++curPackageNumber)
+	{
+		Thread::Sleep(5);
+		int copyLength = BUFFER_SIZE < sum ? BUFFER_SIZE : (sum % BUFFER_SIZE);
+		sum -= copyLength;
+		pubFile->bData = gcnew array<Byte>(copyLength);
+		System::Array::Copy(buffer, counter, pubFile->bData, 0, copyLength);
+		counter += copyLength;
+		check += pubFile->bData->Length;
+		pubFile->iPackageNumber = curPackageNumber;
+		pubFile->iTotalPackage = iTotalPackage;
+		array<Byte>^ byteData = pubFile->pack();
+		clientSocket->Send(byteData);
+		//delete[] pubFile->bData;
+	}
+
+
+	if (check == buffer->Length)
+		ServerController::getObject()->mainForm->AddTextToContent("Sent " + pubFile->fileName + "(" + Convert::ToString(check) + ") bytes" + " to " + getUsernameBySocket(clientSocket) + " successfully !");
+	//delete[] buffer;
+
+}
+void ServerController::listFileNameResponse(Socket^ clientSocket)
+{
+	ListPublicFileNameStruct^ listFileName = gcnew ListPublicFileNameStruct();
+	listFileName->listFileName = getListFileName();
+	array<Byte>^ data = listFileName->pack();
+	clientSocket->Send(data);
+}
+array<String^>^ ServerController::getListFileName()
+{
+	{
+		array<String^>^ lines = nullptr;
+		lines = System::IO::File::ReadAllLines(fileNamePath);
+
+		return lines;
+	}
+}
 bool ServerController::checkLogin(String^ Username, String^ Password, String^& errorMsg)
 {
 	//Check for blank!

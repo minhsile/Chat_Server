@@ -3,6 +3,7 @@
   Client.ConnectServer.resources - Embedded, ContainedInManifestFile, 
   Client.LoginForm.resources - Embedded, ContainedInManifestFile, 
   Client.MainForm.resources - Embedded, ContainedInManifestFile, 
+  Client.PublicFile.resources - Embedded, ContainedInManifestFile, 
   Client.SetInfor.resources - Embedded, ContainedInManifestFile, 
 ImageRuntimeVersion: v4.0.30319
 Assembly Client, Version=1.0.*, Culture=Invariant Language (Invariant Country): 
@@ -53,6 +54,23 @@ Class Client.ConnectServer: AutoLayout, AnsiClass, Class, Public, BeforeFieldIni
 Class Client.SetInfor: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class Client.PublicFile: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    System.String fileNameToSend : Public
+    Int32 fileSizeToSend : Public
+    System.IO.FileStream writerStream : Public
+    System.String filePathToSend : Public
+    System.String fileNameToReceive : Public
+    System.String pathFileToReceiver : Public
+  Methods:
+    splitPathFileToReceiver(String): PrivateScope, Public, HideBySig
+    ThreadChooseFile(): PrivateScope, Public, HideBySig
+    SetListFileName(String[]): PrivateScope, Public, HideBySig
+    setUpProcessBar(Int32, Int32): PrivateScope, Public, HideBySig
+    resetProcessBar(): PrivateScope, Public, HideBySig
+    setValueOfProcessBar(Int32): PrivateScope, Public, HideBySig
 Class Client.ChangePasswordScreen: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
