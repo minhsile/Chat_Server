@@ -16,6 +16,11 @@
 #include "SetInfor.h"
 #include "RequestInfor.h"
 #include "ResponseInfor.h"
+
+#include "ListPublicFileName.h"
+#include "RequestSendPublicFile.h"
+#include "UploadPublicFile.h"
+#include "DownloadPublicFile.h"
 ref class ChatControl
 {
 public:
@@ -110,6 +115,34 @@ public:
 			result->messageType = ChatStruct::MessageType::ResponseInfor;
 			result->unpack(buff);
 			break;
+		case ChatStruct::MessageType::ListPublicFileName:
+		{
+			result = gcnew ListPublicFileNameStruct();
+			result->messageType = ChatStruct::MessageType::ListPublicFileName;
+			result->unpack(buff);
+			break;
+		}
+		case ChatStruct::MessageType::UploadPublicFile:
+		{
+			result = gcnew UploadPublicFileStruct();
+			result->messageType = ChatStruct::MessageType::UploadPublicFile;
+			result->unpack(buff);
+			break;
+		}
+		case ChatStruct::MessageType::RequestSendPublicFile:
+		{
+			result = gcnew RequestSendPublicFileStruct();
+			result->messageType = ChatStruct::MessageType::RequestSendPublicFile;
+			result->unpack(buff);
+			break;
+		}
+		case ChatStruct::MessageType::DownloadPublicFile:
+		{
+			result = gcnew DownloadPublicFileStruct();
+			result->messageType = ChatStruct::MessageType::DownloadPublicFile;
+			result->unpack(buff);
+			break;
+		}
 		default:
 			break;
 		}

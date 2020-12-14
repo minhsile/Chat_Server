@@ -53,6 +53,8 @@ namespace Client {
 	private: System::Windows::Forms::Button^ butChangePass;
 	private: System::Windows::Forms::Button^ butDisconnect;
 	private: System::Windows::Forms::Button^ butShowInfor;
+	private: System::Windows::Forms::Button^ butUpDownloadFile;
+
 
 	private:
 		/// <summary>
@@ -73,51 +75,68 @@ namespace Client {
 			this->butChangePass = (gcnew System::Windows::Forms::Button());
 			this->butSetInfor = (gcnew System::Windows::Forms::Button());
 			this->butShowInfor = (gcnew System::Windows::Forms::Button());
+			this->butUpDownloadFile = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
-			this->butDisconnect->Location = System::Drawing::Point(44, 322);
+		
+			this->butDisconnect->Location = System::Drawing::Point(33, 322);
 			this->butDisconnect->Name = L"butDisconnect";
-			this->butDisconnect->Size = System::Drawing::Size(99, 23);
+			this->butDisconnect->Size = System::Drawing::Size(120, 23);
 			this->butDisconnect->TabIndex = 19;
 			this->butDisconnect->Text = L"Logout";
 			this->butDisconnect->UseVisualStyleBackColor = true;
 			this->butDisconnect->Click += gcnew System::EventHandler(this, &MainScreen::butDisconnect_Click);
+		
 			this->labOnline->AutoSize = true;
 			this->labOnline->Location = System::Drawing::Point(43, 9);
 			this->labOnline->Name = L"labOnline";
 			this->labOnline->Size = System::Drawing::Size(97, 13);
 			this->labOnline->TabIndex = 20;
 			this->labOnline->Text = L"ONLINE FRIENDS";
+			
 			this->lbOnlineUser->FormattingEnabled = true;
 			this->lbOnlineUser->Location = System::Drawing::Point(23, 25);
 			this->lbOnlineUser->Name = L"lbOnlineUser";
 			this->lbOnlineUser->Size = System::Drawing::Size(137, 160);
 			this->lbOnlineUser->TabIndex = 21;
 			this->lbOnlineUser->MouseDoubleClick += gcnew System::Windows::Forms::MouseEventHandler(this, &MainScreen::lbOnlineUser_MouseDoubleClick);
-			this->butChangePass->Location = System::Drawing::Point(33, 283);
+		
+			this->butChangePass->Location = System::Drawing::Point(33, 293);
 			this->butChangePass->Name = L"butChangePass";
 			this->butChangePass->Size = System::Drawing::Size(120, 23);
 			this->butChangePass->TabIndex = 22;
 			this->butChangePass->Text = L"Change Password";
 			this->butChangePass->UseVisualStyleBackColor = true;
 			this->butChangePass->Click += gcnew System::EventHandler(this, &MainScreen::butChangePass_Click);
-			this->butSetInfor->Location = System::Drawing::Point(33, 243);
+			
+			this->butSetInfor->Location = System::Drawing::Point(33, 264);
 			this->butSetInfor->Name = L"butSetInfor";
 			this->butSetInfor->Size = System::Drawing::Size(120, 23);
 			this->butSetInfor->TabIndex = 23;
 			this->butSetInfor->Text = L"Set Information";
 			this->butSetInfor->UseVisualStyleBackColor = true;
 			this->butSetInfor->Click += gcnew System::EventHandler(this, &MainScreen::butSetInfor_Click);
-			this->butShowInfor->Location = System::Drawing::Point(33, 205);
+		
+			this->butShowInfor->Location = System::Drawing::Point(33, 235);
 			this->butShowInfor->Name = L"butShowInfor";
 			this->butShowInfor->Size = System::Drawing::Size(120, 23);
 			this->butShowInfor->TabIndex = 24;
 			this->butShowInfor->Text = L"Show My Information";
 			this->butShowInfor->UseVisualStyleBackColor = true;
 			this->butShowInfor->Click += gcnew System::EventHandler(this, &MainScreen::butShowInfor_Click);
+			
+			this->butUpDownloadFile->Location = System::Drawing::Point(33, 206);
+			this->butUpDownloadFile->Name = L"butUpDownloadFile";
+			this->butUpDownloadFile->Size = System::Drawing::Size(120, 23);
+			this->butUpDownloadFile->TabIndex = 24;
+			this->butUpDownloadFile->Text = L"Up/Download File";
+			this->butUpDownloadFile->UseVisualStyleBackColor = true;
+			this->butUpDownloadFile->Click += gcnew System::EventHandler(this, &MainScreen::butPublicFile_Click);
+			
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoScroll = true;
 			this->ClientSize = System::Drawing::Size(187, 359);
+			this->Controls->Add(this->butUpDownloadFile);
 			this->Controls->Add(this->butShowInfor);
 			this->Controls->Add(this->butSetInfor);
 			this->Controls->Add(this->butChangePass);
@@ -151,5 +170,6 @@ namespace Client {
 	private: System::Void butChangePass_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void butSetInfor_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void butShowInfor_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void butPublicFile_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }

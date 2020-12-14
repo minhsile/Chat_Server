@@ -1,4 +1,2 @@
 minhsi|234
 ngoclam|12345
-voduy|123
-ngoclamtran|123

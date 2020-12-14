@@ -161,6 +161,9 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PublicFile.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SetInfor.h">
       <FileType>CppForm</FileType>
@@ -191,6 +194,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="PublicFile.cpp" />
     <ClCompile Include="SetInfor.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -218,6 +222,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PublicFile.resx">
+      <DependentUpon>PublicFile.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SetInfor.resx">
       <DependentUpon>SetInfor.h</DependentUpon>

@@ -6,10 +6,12 @@ using namespace System::Net;
 using namespace System::Net::Sockets;
 using namespace System::Collections::Generic; //List
 using namespace System::Threading; //Thread
+using namespace System::IO;
 
 ref class ServerController; //Prototype
 #include "MainForm.h"
-//#include "ClientInfo.h"
+#define DEFAULT_BUFFER_LENGTH 10752 // buffer file + buffer others
+#define BUFFER_SIZE 10240
 ref class ClientInfo
 {
 public:
@@ -35,6 +37,11 @@ public:
 	String^ accountPath = "../Server/Database/accounts.txt";
 	String^ inforPath = "../Server/Database/infor.txt";
 
+	FileStream^ fileStream = nullptr;
+	int fileSize = 0;
+	String^ fileNamePath = "../Server/Database/fileNames.txt";
+	String^ filePath = "../Server/File/";
+
 	//Form
 	Server::MainForm^ mainForm;
 
@@ -44,6 +51,11 @@ public:
 	Socket^ serverSocket;
 	List<ClientInfo^>^ lstClientInfo = gcnew List<ClientInfo^>();
 
+	//File
+	bool addFileName(String^ fileName);
+	void sendPublicFile(String^ fileName, Socket^ clientSocket);
+	void listFileNameResponse(Socket^ clientSocket);
+	array<String^>^ getListFileName();
 
 	//Helper
 	bool checkLogin(String^ Username, String^ Password, String^& errorMsg);

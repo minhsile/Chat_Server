@@ -18,3 +18,7 @@
 #include "SetInfor.h"
 #include "RequestInfor.h"
 #include "ResponseInfor.h"
+#include "ListPublicFileName.h"
+#include "RequestSendPublicFile.h"
+#include "UploadPublicFile.h"
+#include "DownloadPublicFile.h"

@@ -15,3 +15,4 @@ D:\Github\Chat_Server\Chat_Project\Client\Debug\Client.LoginForm.resources
 D:\Github\Chat_Server\Chat_Project\Client\Debug\Client.MainForm.resources
 D:\Github\Chat_Server\Chat_Project\Client\Debug\Client.SetInfor.resources
 D:\Github\Chat_Server\Chat_Project\Client\Debug\Client.vcxproj.GenerateResource.cache
+C:\Users\IBM\Desktop\Chat_Server\Chat_Server\Chat_Project\Client\Debug\Client.PublicFile.resources

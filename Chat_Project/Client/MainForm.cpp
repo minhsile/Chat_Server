@@ -25,6 +25,11 @@ System::Void MainScreen::butShowInfor_Click(System::Object^ sender, System::Even
 {
 	AppController::getObject()->requestInfor(AppController::getObject()->strUsername);
 }
+System::Void Client::MainScreen::butPublicFile_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	AppController::getObject()->publicFileScreen = gcnew Client::PublicFile();
+	AppController::getObject()->publicFileScreen->Show();
+}
 void MainScreen::AddAnOnlineUser(String^ username)
 {
 	lbOnlineUser->Items->Add(username);

@@ -145,9 +145,11 @@
     <ClInclude Include="ChangePassword.h" />
     <ClInclude Include="ChatStruct.h" />
     <ClInclude Include="Control.h" />
+    <ClInclude Include="DownloadPublicFile.h" />
     <ClInclude Include="Form1.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="ListPublicFileName.h" />
     <ClInclude Include="Login.h" />
     <ClInclude Include="LoginNotification.h" />
     <ClInclude Include="LogoutNotification.h" />
@@ -155,6 +157,7 @@
     <ClInclude Include="PrivateChat.h" />
     <ClInclude Include="PrivateFile.h" />
     <ClInclude Include="RequestSendFile.h" />
+    <ClInclude Include="RequestSendPublicFile.h" />
     <ClInclude Include="ResponseInfor.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResponseChangePassword.h" />
@@ -164,6 +167,7 @@
     <ClInclude Include="RequestInfor.h" />
     <ClInclude Include="SetInfor.h" />
     <ClInclude Include="Signup.h" />
+    <ClInclude Include="UploadPublicFile.h" />
     <ClInclude Include="UserStatus.h" />
   </ItemGroup>
   <ItemGroup>
