@@ -205,7 +205,6 @@ int AppController::createThreadListenMessageFromServer()
 	Thread^ newThread = gcnew Thread(gcnew ThreadStart(this, &AppController::ListenMessage));
 	newThread->SetApartmentState(ApartmentState::STA);
 	newThread->Start();
-
 	return 0;
 }
 
@@ -412,7 +411,7 @@ int AppController::sendPrivateFile(String^ _ToUsername, String^ _FileName, Strin
 	return 0;
 }
 
-int AppController::setInfor(String^ _Username,String^ _Birthdate)
+int AppController::setInfor(String^ _Username, String^ _Birthdate)
 {
 	SetInformationStruct^ setInfor = gcnew SetInformationStruct();
 	setInfor->userName = _Username;
