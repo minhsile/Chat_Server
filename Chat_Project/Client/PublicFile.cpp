@@ -86,6 +86,7 @@ System::Void Client::PublicFile::butUpLoad_Click(System::Object^ sender, System:
 
 System::Void Client::PublicFile::butDownLoad_Click(System::Object^ sender, System::EventArgs^ e)
 {
+	MessageBox::Show(fileName);
 	if (fileNameToReceive != nullptr)
 		AppController::getObject()->requestDownloadPublicFile(fileNameToReceive);
 }
@@ -101,10 +102,11 @@ System::Void Client::PublicFile::listBoxFileName_OnMouseClick(System::Object^ se
 	int index = this->listBox_fileName->IndexFromPoint(e->Location);
 	if (index != System::Windows::Forms::ListBox::NoMatches)
 	{
-		String^ fileName = this->listBox_fileName->Items[index]->ToString();
-		fileNameToReceive = fileName;
-		this->txtFileChosen->Text = fileName;
-		this->fileFormat = splitNameFile(fileName);
+		String ^FileName = this->listBox_fileName->Items[index]->ToString();
+		this->fileName = FileName;
+		this->fileNameToReceive = FileName;
+		this->txtFileChosen->Text = FileName;
+		this->fileFormat = splitNameFile(FileName);
 	}
 }
 

@@ -38,8 +38,10 @@ namespace Client {
 			}
 		}
 	private: System::Windows::Forms::Label^ labFileName;
+	private: System::Windows::Forms::TextBox^ txtFileRename;
+
 	protected:
-	private: System::Windows::Forms::TextBox^ textBox1;
+
 	private: System::Windows::Forms::Button^ butChange;
 
 	private:
@@ -56,28 +58,19 @@ namespace Client {
 		void InitializeComponent(void)
 		{
 			this->labFileName = (gcnew System::Windows::Forms::Label());
-			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
+			this->txtFileRename = (gcnew System::Windows::Forms::TextBox());
 			this->butChange = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
-			// 
-			// labFileName
-			// 
 			this->labFileName->AutoSize = true;
 			this->labFileName->Location = System::Drawing::Point(13, 19);
 			this->labFileName->Name = L"labFileName";
 			this->labFileName->Size = System::Drawing::Size(63, 13);
 			this->labFileName->TabIndex = 0;
 			this->labFileName->Text = L"New Name:";
-			// 
-			// textBox1
-			// 
-			this->textBox1->Location = System::Drawing::Point(79, 16);
-			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(194, 20);
-			this->textBox1->TabIndex = 1;
-			// 
-			// butChange
-			// 
+			this->txtFileRename->Location = System::Drawing::Point(79, 16);
+			this->txtFileRename->Name = L"txtFileRename";
+			this->txtFileRename->Size = System::Drawing::Size(194, 20);
+			this->txtFileRename->TabIndex = 1;
 			this->butChange->Location = System::Drawing::Point(101, 43);
 			this->butChange->Name = L"butChange";
 			this->butChange->Size = System::Drawing::Size(75, 23);
@@ -85,14 +78,11 @@ namespace Client {
 			this->butChange->Text = L"Change";
 			this->butChange->UseVisualStyleBackColor = true;
 			this->butChange->Click += gcnew System::EventHandler(this, &ChangeFileName::butChange_Click);
-			// 
-			// ChangeFileName
-			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(281, 73);
 			this->Controls->Add(this->butChange);
-			this->Controls->Add(this->textBox1);
+			this->Controls->Add(this->txtFileRename);
 			this->Controls->Add(this->labFileName);
 			this->Name = L"ChangeFileName";
 			this->Text = L"Rename File";

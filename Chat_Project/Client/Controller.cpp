@@ -494,7 +494,7 @@ void AppController::uploadPublicFileToServer(String^ filePath, String^ fileName)
 		for (; curPackageNumber <= iTotalPackage; curPackageNumber++)
 		{
 			//MessageBox::Show("Pack:" + Convert::ToString(curPackageNumber));
-			Thread::Sleep(5);
+			Thread::Sleep(300);
 			int copyLength = BUFFER_SIZE < sum ? BUFFER_SIZE : (sum % BUFFER_SIZE);
 			sum -= copyLength;
 			array<Byte>^ bData = gcnew array<Byte>(copyLength);
