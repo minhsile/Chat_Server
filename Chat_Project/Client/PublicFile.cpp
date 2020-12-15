@@ -5,6 +5,7 @@ System::Void Client::PublicFile::PublicFile_Load(System::Object^ sender, System:
 {
 	AppController::getObject()->createThreadListenMessageFromServer();
 	AppController::getObject()->requestListPublicFileName();
+	setFileNameChosen(this->fileName);
 }
 
 String^ Client::PublicFile::splitPathFileToReceiver(String^ pathFile)
@@ -19,6 +20,20 @@ String^ Client::PublicFile::splitPathFileToReceiver(String^ pathFile)
 	return pathFile;
 }
 
+String^ Client::PublicFile::splitNameFile(String^ fileName) {
+	int length = fileName->Length;
+	int i = length - 1;
+	for (i; i >= 0; --i) {
+		if (fileName[i] == '.')
+			break;
+	}
+	String^ name = "";
+	for (i; i < length; ++i)
+		name += fileName[i];
+
+	return name;
+}
+
 System::Void Client::PublicFile::ThreadChooseFile()
 {
 	OpenFileDialog^ ofd = gcnew OpenFileDialog;
@@ -31,7 +46,7 @@ System::Void Client::PublicFile::ThreadChooseFile()
 		fileNameToSend = _info;
 		filePathToSend = info;
 		fileSizeToSend = size;
-
+		fileFormat = this->splitNameFile(_info);
 		AppController::getObject()->uploadPublicFileToServer(info, _info);
 	}
 }
@@ -75,6 +90,12 @@ System::Void Client::PublicFile::butDownLoad_Click(System::Object^ sender, Syste
 		AppController::getObject()->requestDownloadPublicFile(fileNameToReceive);
 }
 
+System::Void Client::PublicFile::butChangeName_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	this->changeFileName = gcnew Client::ChangeFileName();
+	this->changeFileName->Show();
+}
+
 System::Void Client::PublicFile::listBoxFileName_OnMouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
 	int index = this->listBox_fileName->IndexFromPoint(e->Location);
@@ -82,5 +103,15 @@ System::Void Client::PublicFile::listBoxFileName_OnMouseClick(System::Object^ se
 	{
 		String^ fileName = this->listBox_fileName->Items[index]->ToString();
 		fileNameToReceive = fileName;
+		this->txtFileChosen->Text = fileName;
+		this->fileFormat = splitNameFile(fileName);
 	}
+}
+
+void Client::PublicFile::setFileNameChosen(String^ text) {
+	this->txtFileChosen->Text = text;
+}
+
+void Client::PublicFile::resetFileNameChosen() {
+	this->txtFileChosen->Text = nullptr;
 }

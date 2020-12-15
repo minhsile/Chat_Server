@@ -211,17 +211,18 @@ System::Void AppController::ListenMessage()
 
 				if (pubFile->iPackageNumber == 1) {
 					AppController::getObject()->publicFileScreen->setUpProcessBar(1, pubFile->iTotalPackage);//
-					AppController::getObject()->createThreadListenMessageFromServer();
-					AppController::getObject()->publicFileScreen->writerStream = gcnew System::IO::FileStream(AppController::getObject()->publicFileScreen->pathFileToReceiver + AppController::getObject()->publicFileScreen->fileNameToReceive, System::IO::FileMode::Create, System::IO::FileAccess::Write);
+					//AppController::getObject()->createThreadListenMessageFromServer();
+					AppController::getObject()->publicFileScreen->fileSize = pubFile->iFileSize;
+					AppController::getObject()->publicFileScreen->writerStream = gcnew System::IO::FileStream(AppController::getObject()->publicFileScreen->pathFileToReceiver + AppController::getObject()->publicFileScreen->fileName, System::IO::FileMode::Create, System::IO::FileAccess::Write);
 				}
 				AppController::getObject()->publicFileScreen->writerStream->Write(pubFile->bData, 0, pubFile->bData->Length);
 				AppController::getObject()->publicFileScreen->setValueOfProcessBar(pubFile->iPackageNumber);//
 				if (pubFile->iPackageNumber == pubFile->iTotalPackage) {
 					AppController::getObject()->publicFileScreen->resetProcessBar();//
 					if (pubFile->iFileSize == (int)AppController::getObject()->publicFileScreen->writerStream->Length)
-						MessageBox::Show("Downloaded " + pubFile->fileName + "(" + Convert::ToString(pubFile->iFileSize) + ") bytes successfully!", "Notification");
+						MessageBox::Show("Downloaded " + AppController::getObject()->publicFileScreen->fileName/*pubFile->fileName*/ + " (" + Convert::ToString(pubFile->iFileSize) + " bytes) successfully!", "Notification");
 					else
-						MessageBox::Show("Downloaded " + pubFile->fileName + "(" + Convert::ToString(pubFile->iFileSize) + ") bytes (missed " + Convert::ToString(pubFile->iFileSize - (int)AppController::getObject()->publicFileScreen->writerStream->Length) + "bytes)!", "Notification");
+						MessageBox::Show("Downloaded " + AppController::getObject()->publicFileScreen->fileName/*pubFile->fileName*/ + " (" + Convert::ToString(pubFile->iFileSize) + " bytes) (missed " + Convert::ToString(pubFile->iFileSize - (int)AppController::getObject()->publicFileScreen->writerStream->Length) + "bytes)!", "Notification");
 					AppController::getObject()->publicFileScreen->writerStream->Close();
 					AppController::getObject()->publicFileScreen->writerStream = nullptr;
 				}

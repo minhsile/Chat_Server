@@ -1,3 +1,4 @@
+  Client.ChangeFileName.resources - Embedded, ContainedInManifestFile, 
   Client.ChangePasswordForm.resources - Embedded, ContainedInManifestFile, 
   Client.ChatForm.resources - Embedded, ContainedInManifestFile, 
   Client.ConnectServer.resources - Embedded, ContainedInManifestFile, 
@@ -48,6 +49,9 @@ Class Client.PrivateChat: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
     AddTextToDisplayChatbox(String): PrivateScope, Public, HideBySig
     ThreadChooseFile(): PrivateScope, Public, HideBySig
     splitPathFileToReceiver(String): PrivateScope, Public, HideBySig
+Class Client.ChangePasswordScreen: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
 Class Client.ConnectServer: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
@@ -58,19 +62,26 @@ Class Client.PublicFile: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Fields:
+    System.String fileName : Public
+    System.String fileFormat : Public
     System.String fileNameToSend : Public
     Int32 fileSizeToSend : Public
     System.IO.FileStream writerStream : Public
     System.String filePathToSend : Public
     System.String fileNameToReceive : Public
     System.String pathFileToReceiver : Public
+    Int32 fileSize : Public
+    Client.ChangeFileName changeFileName : Public
   Methods:
     splitPathFileToReceiver(String): PrivateScope, Public, HideBySig
+    splitNameFile(String): PrivateScope, Public, HideBySig
     ThreadChooseFile(): PrivateScope, Public, HideBySig
     SetListFileName(String[]): PrivateScope, Public, HideBySig
     setUpProcessBar(Int32, Int32): PrivateScope, Public, HideBySig
     resetProcessBar(): PrivateScope, Public, HideBySig
     setValueOfProcessBar(Int32): PrivateScope, Public, HideBySig
-Class Client.ChangePasswordScreen: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    setFileNameChosen(String): PrivateScope, Public, HideBySig
+    resetFileNameChosen(): PrivateScope, Public, HideBySig
+Class Client.ChangeFileName: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName

@@ -53,11 +53,11 @@
     <ClInclude Include="PublicFile.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="ChangeFileName.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AssemblyInfo.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="LoginForm.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -90,6 +90,12 @@
     </ClCompile>
     <ClCompile Include="PublicFile.cpp">
       <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangeFileName.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="AssemblyInfo.cpp">
+      <Filter>Ressourcendateien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

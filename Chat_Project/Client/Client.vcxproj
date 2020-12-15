@@ -143,6 +143,9 @@
     <ResourceCompile Include="app.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChangeFileName.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="ChangePasswordForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -171,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="ChangeFileName.cpp" />
     <ClCompile Include="ChangePasswordForm.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ConnectServer.cpp" />
@@ -208,6 +212,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ChangeFileName.resx">
+      <DependentUpon>ChangeFileName.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ChangePasswordForm.resx">
       <DependentUpon>ChangePasswordForm.h</DependentUpon>
     </EmbeddedResource>
