@@ -10,8 +10,8 @@ using namespace System::IO;
 
 ref class ServerController; //Prototype
 #include "MainForm.h"
-#define DEFAULT_BUFFER_LENGTH 10752 // buffer file + buffer others
-#define BUFFER_SIZE 10240
+#define DEFAULT_BUFFER_LENGTH 102912 // buffer file + buffer others
+#define BUFFER_SIZE 102400
 ref class ClientInfo
 {
 public:

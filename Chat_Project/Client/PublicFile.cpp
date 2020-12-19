@@ -43,11 +43,11 @@ System::Void Client::PublicFile::ThreadChooseFile()
 		String^ info = ofd->FileName;
 		int size = IO::FileInfo(ofd->FileName).Length;
 
-		fileNameToSend = _info;
+		fileName = _info;
 		filePathToSend = info;
 		fileSizeToSend = size;
 		fileFormat = this->splitNameFile(_info);
-		AppController::getObject()->uploadPublicFileToServer(info, _info);
+		this->txtFileChosen->Text = fileName;
 	}
 }
 
@@ -77,16 +77,21 @@ void Client::PublicFile::setValueOfProcessBar(int value)
 	this->progressBar1->Value = value;
 }
 
-System::Void Client::PublicFile::butUpLoad_Click(System::Object^ sender, System::EventArgs^ e)
+System::Void Client::PublicFile::butChooseFile_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	Thread^ newThread = gcnew Thread(gcnew ThreadStart(this, &PublicFile::ThreadChooseFile));
 	newThread->SetApartmentState(ApartmentState::STA);
 	newThread->Start();
 }
 
+System::Void Client::PublicFile::butUpLoad_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	AppController::getObject()->uploadPublicFileToServer(filePathToSend, fileName);
+
+}
+
 System::Void Client::PublicFile::butDownLoad_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	MessageBox::Show(fileName);
 	if (fileNameToReceive != nullptr)
 		AppController::getObject()->requestDownloadPublicFile(fileNameToReceive);
 }
@@ -117,3 +122,5 @@ void Client::PublicFile::setFileNameChosen(String^ text) {
 void Client::PublicFile::resetFileNameChosen() {
 	this->txtFileChosen->Text = nullptr;
 }
+
+

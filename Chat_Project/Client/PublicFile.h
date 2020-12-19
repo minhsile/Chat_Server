@@ -46,6 +46,7 @@ namespace Client {
 
 	private: System::Windows::Forms::TextBox^ txtFileChosen;
 	private: System::Windows::Forms::Button^ butChangeName;
+	private: System::Windows::Forms::Button^ butChooseFile;
 	protected:
 
 	protected:
@@ -71,6 +72,7 @@ namespace Client {
 			this->labFileNameChosen = (gcnew System::Windows::Forms::Label());
 			this->txtFileChosen = (gcnew System::Windows::Forms::TextBox());
 			this->butChangeName = (gcnew System::Windows::Forms::Button());
+			this->butChooseFile = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			this->labName->AutoSize = true;
 			this->labName->Location = System::Drawing::Point(21, 9);
@@ -78,12 +80,14 @@ namespace Client {
 			this->labName->Size = System::Drawing::Size(63, 13);
 			this->labName->TabIndex = 0;
 			this->labName->Text = L"FILE NAME";
+
 			this->listBox_fileName->FormattingEnabled = true;
 			this->listBox_fileName->Location = System::Drawing::Point(24, 25);
 			this->listBox_fileName->Name = L"listBox_fileName";
 			this->listBox_fileName->Size = System::Drawing::Size(154, 186);
 			this->listBox_fileName->TabIndex = 1;
 			this->listBox_fileName->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &PublicFile::listBoxFileName_OnMouseClick);
+
 			this->butUpLoad->Location = System::Drawing::Point(184, 25);
 			this->butUpLoad->Name = L"butUpLoad";
 			this->butUpLoad->Size = System::Drawing::Size(95, 23);
@@ -91,6 +95,7 @@ namespace Client {
 			this->butUpLoad->Text = L"UPLOAD";
 			this->butUpLoad->UseVisualStyleBackColor = true;
 			this->butUpLoad->Click += gcnew System::EventHandler(this, &PublicFile::butUpLoad_Click);
+
 			this->butDownLoad->Location = System::Drawing::Point(184, 54);
 			this->butDownLoad->Name = L"butDownLoad";
 			this->butDownLoad->Size = System::Drawing::Size(95, 23);
@@ -98,20 +103,24 @@ namespace Client {
 			this->butDownLoad->Text = L"DOWNLOAD";
 			this->butDownLoad->UseVisualStyleBackColor = true;
 			this->butDownLoad->Click += gcnew System::EventHandler(this, &PublicFile::butDownLoad_Click);
+
 			this->progressBar1->Location = System::Drawing::Point(24, 253);
 			this->progressBar1->Name = L"progressBar1";
 			this->progressBar1->Size = System::Drawing::Size(255, 23);
 			this->progressBar1->TabIndex = 3;
+
 			this->labFileNameChosen->AutoSize = true;
 			this->labFileNameChosen->Location = System::Drawing::Point(21, 226);
 			this->labFileNameChosen->Name = L"labFileNameChosen";
 			this->labFileNameChosen->Size = System::Drawing::Size(66, 13);
 			this->labFileNameChosen->TabIndex = 4;
 			this->labFileNameChosen->Text = L"FILE NAME:";
+
 			this->txtFileChosen->Location = System::Drawing::Point(93, 223);
 			this->txtFileChosen->Name = L"txtFileChosen";
 			this->txtFileChosen->Size = System::Drawing::Size(186, 20);
 			this->txtFileChosen->TabIndex = 5;
+
 			this->butChangeName->Location = System::Drawing::Point(184, 188);
 			this->butChangeName->Name = L"butChangeName";
 			this->butChangeName->Size = System::Drawing::Size(95, 23);
@@ -119,9 +128,19 @@ namespace Client {
 			this->butChangeName->Text = L"CHANGE NAME";
 			this->butChangeName->UseVisualStyleBackColor = true;
 			this->butChangeName->Click += gcnew System::EventHandler(this, &PublicFile::butChangeName_Click);
+
+			this->butChooseFile->Location = System::Drawing::Point(184, 159);
+			this->butChooseFile->Name = L"butChooseFile";
+			this->butChooseFile->Size = System::Drawing::Size(95, 23);
+			this->butChooseFile->TabIndex = 6;
+			this->butChooseFile->Text = L"SELECT FILE";
+			this->butChooseFile->UseVisualStyleBackColor = true;
+			this->butChooseFile->Click += gcnew System::EventHandler(this, &PublicFile::butChooseFile_Click);
+
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(291, 288);
+			this->Controls->Add(this->butChooseFile);
 			this->Controls->Add(this->txtFileChosen);
 			this->Controls->Add(this->labFileNameChosen);
 			this->Controls->Add(this->progressBar1);
@@ -169,5 +188,6 @@ namespace Client {
 
 	public: void setFileNameChosen(String^ text);
 	public: void resetFileNameChosen();
+	private: System::Void butChooseFile_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }

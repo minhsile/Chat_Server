@@ -1,8 +1,8 @@
 #include"pch.h"
 #include "Controller.h"
 #define NULL 0
-#define DEFAULT_BUFFER_LENGTH 10752
-#define BUFFER_SIZE 10240
+#define DEFAULT_BUFFER_LENGTH 102912
+#define BUFFER_SIZE 102400
 using namespace System::IO;
 
 AppController::AppController() //Don't allow to create object
@@ -220,9 +220,9 @@ System::Void AppController::ListenMessage()
 				if (pubFile->iPackageNumber == pubFile->iTotalPackage) {
 					AppController::getObject()->publicFileScreen->resetProcessBar();//
 					if (pubFile->iFileSize == (int)AppController::getObject()->publicFileScreen->writerStream->Length)
-						MessageBox::Show("Downloaded " + AppController::getObject()->publicFileScreen->fileName/*pubFile->fileName*/ + " (" + Convert::ToString(pubFile->iFileSize) + " bytes) successfully!", "Notification");
+						MessageBox::Show(AppController::getObject()->strUsername + "downloaded " + AppController::getObject()->publicFileScreen->fileName/*pubFile->fileName*/ + " (" + Convert::ToString(pubFile->iFileSize) + " bytes) successfully!", "Notification");
 					else
-						MessageBox::Show("Downloaded " + AppController::getObject()->publicFileScreen->fileName/*pubFile->fileName*/ + " (" + Convert::ToString(pubFile->iFileSize) + " bytes) (missed " + Convert::ToString(pubFile->iFileSize - (int)AppController::getObject()->publicFileScreen->writerStream->Length) + "bytes)!", "Notification");
+						MessageBox::Show(AppController::getObject()->strUsername + "downloaded " + AppController::getObject()->publicFileScreen->fileName/*pubFile->fileName*/ + " (" + Convert::ToString(pubFile->iFileSize) + " bytes) (missed " + Convert::ToString(pubFile->iFileSize - (int)AppController::getObject()->publicFileScreen->writerStream->Length) + "bytes)!", "Notification");
 					AppController::getObject()->publicFileScreen->writerStream->Close();
 					AppController::getObject()->publicFileScreen->writerStream = nullptr;
 				}
@@ -420,6 +420,7 @@ int AppController::sendPrivateFile(String^ _ToUsername, String^ _FileName, Strin
 		//Console::WriteLine("Start send file: ");
 		for (; curPackageNumber <= iTotalPackage; ++curPackageNumber)
 		{
+			Thread::Sleep(200);
 			//System::Array::Copy(buffer, counter, bData, BUFF_SIZE);
 			int copyLength = counter + BUFF_SIZE < sum ? BUFF_SIZE : (sum % BUFF_SIZE);
 			array<Byte>^ bData = gcnew array<Byte>(copyLength);
@@ -494,7 +495,7 @@ void AppController::uploadPublicFileToServer(String^ filePath, String^ fileName)
 		for (; curPackageNumber <= iTotalPackage; curPackageNumber++)
 		{
 			//MessageBox::Show("Pack:" + Convert::ToString(curPackageNumber));
-			Thread::Sleep(300);
+			Thread::Sleep(200);
 			int copyLength = BUFFER_SIZE < sum ? BUFFER_SIZE : (sum % BUFFER_SIZE);
 			sum -= copyLength;
 			array<Byte>^ bData = gcnew array<Byte>(copyLength);
