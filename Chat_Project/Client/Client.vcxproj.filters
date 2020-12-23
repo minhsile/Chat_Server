@@ -23,9 +23,6 @@
     <ClInclude Include="MainForm.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="LoginForm.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="ChatForm.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -56,11 +53,11 @@
     <ClInclude Include="ChangeFileName.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="LoginScreen.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="LoginForm.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="MainForm.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -97,9 +94,15 @@
     <ClCompile Include="AssemblyInfo.cpp">
       <Filter>Ressourcendateien</Filter>
     </ClCompile>
+    <ClCompile Include="LoginScreen.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+    <Image Include="pictureBox.Image.png">
       <Filter>Ressourcendateien</Filter>
     </Image>
   </ItemGroup>

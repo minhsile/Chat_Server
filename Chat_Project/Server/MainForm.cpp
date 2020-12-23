@@ -1,4 +1,4 @@
-﻿//#include "pch.h"
+﻿#include "pch.h"
 // #include "Form1.h"
 #include "MainForm.h"
 #include "../Struct/AllStruct.h"

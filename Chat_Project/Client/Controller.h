@@ -6,7 +6,7 @@
 ref class AppController;
 
 
-#include "LoginForm.h"
+#include "LoginScreen.h"
 #include "MainForm.h"
 #include "ChatForm.h"
 #include "ChangePasswordForm.h"

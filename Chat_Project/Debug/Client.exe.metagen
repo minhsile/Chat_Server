@@ -2,7 +2,7 @@
   Client.ChangePasswordForm.resources - Embedded, ContainedInManifestFile, 
   Client.ChatForm.resources - Embedded, ContainedInManifestFile, 
   Client.ConnectServer.resources - Embedded, ContainedInManifestFile, 
-  Client.LoginForm.resources - Embedded, ContainedInManifestFile, 
+  Client.LoginScreen.resources - Embedded, ContainedInManifestFile, 
   Client.MainForm.resources - Embedded, ContainedInManifestFile, 
   Client.PublicFile.resources - Embedded, ContainedInManifestFile, 
   Client.SetInfor.resources - Embedded, ContainedInManifestFile, 
