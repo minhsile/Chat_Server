@@ -4,6 +4,7 @@
 #define DEFAULT_BUFFER_LENGTH 102912
 #define BUFFER_SIZE 102400
 using namespace System::IO;
+using System::Math;
 
 AppController::AppController() //Don't allow to create object
 {
@@ -142,8 +143,8 @@ System::Void AppController::ListenMessage()
 		{
 			RequestSendFileStruct^ rqSendFileStruct = (RequestSendFileStruct^)msgReceived;
 			if (MessageBox::Show(rqSendFileStruct->strUsername + " want to send you a file " +
-				rqSendFileStruct->strFileName + " (" + Convert::ToString(rqSendFileStruct->iFileSize) +
-				" bytes).\nDo you want to receive?", "Receive a file", MessageBoxButtons::YesNo) == DialogResult::Yes)
+				rqSendFileStruct->strFileName + " (" + Convert::ToString(Math::Round(rqSendFileStruct->iFileSize / 1000000.0, 2)) +
+				" MB).\nDo you want to receive?", "Receive a file", MessageBoxButtons::YesNo) == DialogResult::Yes)
 			{
 				AppController::getObject()->responseSendFile(rqSendFileStruct->strUsername, true);
 			}
@@ -160,7 +161,7 @@ System::Void AppController::ListenMessage()
 			if (rpSendFileStruct->IsAccept)
 			{
 				setPrivateMessage(rpSendFileStruct->strUsername, rpSendFileStruct->strUsername + " accept a file "
-					+ prvChat->fileNameToSend + " (" + Convert::ToString(prvChat->fileSizeToSend) + " bytes) from you!");
+					+ prvChat->fileNameToSend + " (" + Convert::ToString(Math::Round(prvChat->fileSizeToSend / 1000000.0, 2)) + " MB) from you!");
 
 				sendPrivateFile(prvChat->strFriendUsername, prvChat->fileNameToSend, prvChat->filePathToSend);
 			}
@@ -168,13 +169,13 @@ System::Void AppController::ListenMessage()
 			{
 
 				setPrivateMessage(rpSendFileStruct->strUsername, rpSendFileStruct->strUsername + " don't accept to receive file "
-					+ prvChat->fileNameToSend + " (" + Convert::ToString(prvChat->fileSizeToSend) + " bytes) from you!");
+					+ prvChat->fileNameToSend + " (" + Convert::ToString(Math::Round(prvChat->fileSizeToSend / 1000000.0, 2)) + " MB) from you!");
 			}
 			break;
 		}
 		case ChatStruct::MessageType::PrivateFile:
 		{
-			MessageBox::Show("Received");
+			//MessageBox::Show("Received");
 			PrivateFileStruct^ prvFileStruct = (PrivateFileStruct^)msgReceived;
 			setPrivateMessage(prvFileStruct->strUsername, "Received: " + prvFileStruct->iPackageNumber + "/" + prvFileStruct->iTotalPackage);
 			Client::PrivateChat^ prvChat = getPrivateChatFormByFriendUsername(prvFileStruct->strUsername);
@@ -210,19 +211,19 @@ System::Void AppController::ListenMessage()
 			try {
 
 				if (pubFile->iPackageNumber == 1) {
-					AppController::getObject()->publicFileScreen->setUpProcessBar(1, pubFile->iTotalPackage);//
+					AppController::getObject()->publicFileScreen->setUpProcessBar(1, pubFile->iTotalPackage);
 					//AppController::getObject()->createThreadListenMessageFromServer();
 					AppController::getObject()->publicFileScreen->fileSize = pubFile->iFileSize;
 					AppController::getObject()->publicFileScreen->writerStream = gcnew System::IO::FileStream(AppController::getObject()->publicFileScreen->pathFileToReceiver + AppController::getObject()->publicFileScreen->fileName, System::IO::FileMode::Create, System::IO::FileAccess::Write);
 				}
 				AppController::getObject()->publicFileScreen->writerStream->Write(pubFile->bData, 0, pubFile->bData->Length);
-				AppController::getObject()->publicFileScreen->setValueOfProcessBar(pubFile->iPackageNumber);//
+				AppController::getObject()->publicFileScreen->setValueOfProcessBar(pubFile->iPackageNumber);
 				if (pubFile->iPackageNumber == pubFile->iTotalPackage) {
-					AppController::getObject()->publicFileScreen->resetProcessBar();//
+					AppController::getObject()->publicFileScreen->resetProcessBar();
 					if (pubFile->iFileSize == (int)AppController::getObject()->publicFileScreen->writerStream->Length)
-						MessageBox::Show(AppController::getObject()->strUsername + "downloaded " + AppController::getObject()->publicFileScreen->fileName/*pubFile->fileName*/ + " (" + Convert::ToString(pubFile->iFileSize) + " bytes) successfully!", "Notification");
+						MessageBox::Show(AppController::getObject()->strUsername + " downloaded " + AppController::getObject()->publicFileScreen->fileName/*pubFile->fileName*/ + " (" + Convert::ToString(Math::Round(pubFile->iFileSize/1000000.0,2)) + " MB) successfully!", "Notification");
 					else
-						MessageBox::Show(AppController::getObject()->strUsername + "downloaded " + AppController::getObject()->publicFileScreen->fileName/*pubFile->fileName*/ + " (" + Convert::ToString(pubFile->iFileSize) + " bytes) (missed " + Convert::ToString(pubFile->iFileSize - (int)AppController::getObject()->publicFileScreen->writerStream->Length) + "bytes)!", "Notification");
+						MessageBox::Show(AppController::getObject()->strUsername + " downloaded " + AppController::getObject()->publicFileScreen->fileName/*pubFile->fileName*/ + " (" + Convert::ToString(Math::Round(pubFile->iFileSize/1000000.0,2)) + " MB) (missed " + Convert::ToString(pubFile->iFileSize - (int)AppController::getObject()->publicFileScreen->writerStream->Length) + "bytes)!", "Notification");
 					AppController::getObject()->publicFileScreen->writerStream->Close();
 					AppController::getObject()->publicFileScreen->writerStream = nullptr;
 				}
@@ -400,49 +401,37 @@ int AppController::sendPrivateFile(String^ _ToUsername, String^ _FileName, Strin
 	try
 	{
 		fileStream = gcnew FileStream(_FilePath, FileMode::Open, FileAccess::Read);
-		int length = (int)fileStream->Length;  // get file length
-		buffer = gcnew array<Byte>(length);            // create buffer
+		int length = (int)fileStream->Length;  
+		buffer = gcnew array<Byte>(length);            
 
-		int count;                            // actual number of bytes read
-		int sum = 0;                          // total number of bytes read
+		int count;                            
+		int sum = 0;                          
 
-		// read until Read method returns 0 (end of the stream has been reached)
+
 		while ((count = fileStream->Read(buffer, sum, length - sum)) > 0)
 		{
-			sum += count;  // sum is a buffer offset for next reading
+			sum += count;  
 		}
 
-		int BUFF_SIZE = 512;
 		int counter = 0;
 		int curPackageNumber = 1;
-		int iTotalPackage = sum / (BUFF_SIZE + 1) + 1;
+		int iTotalPackage = sum / (BUFFER_SIZE + 1) + 1;
 
-		//Console::WriteLine("Start send file: ");
 		for (; curPackageNumber <= iTotalPackage; ++curPackageNumber)
 		{
-			Thread::Sleep(200);
-			//System::Array::Copy(buffer, counter, bData, BUFF_SIZE);
-			int copyLength = counter + BUFF_SIZE < sum ? BUFF_SIZE : (sum % BUFF_SIZE);
+			Thread::Sleep(300);
+			int copyLength = counter + BUFFER_SIZE < sum ? BUFFER_SIZE : (sum % BUFFER_SIZE);
 			array<Byte>^ bData = gcnew array<Byte>(copyLength);
 			Console::WriteLine(copyLength);
 			System::Array::Copy(buffer, counter, bData, 0, copyLength);
-			counter += BUFF_SIZE;
-		//	ProgressBar pro;
-		//	pro.Maximum = curPackageNumber;
+			counter += BUFFER_SIZE;
 			prvFileStruct->iPackageNumber = curPackageNumber; 
 			prvFileStruct->iTotalPackage = iTotalPackage;
 			prvFileStruct->bData = bData;
 			array<Byte>^ byteData = prvFileStruct->pack();
 			appSocket->sendMessage(byteData);
-		//	pro.PerformStep();
-			//MessageBox::Show("Debug");
 			setPrivateMessage(_ToUsername, "Sent: " + curPackageNumber + "/" + iTotalPackage);
-
-			//writeSteam->Write(bData, 0, copyLength);
 		}
-		//fileStream->Close();
-		//Console::WriteLine("End of sending file");
-
 	}
 	catch (Exception^ e)
 	{
@@ -495,7 +484,7 @@ void AppController::uploadPublicFileToServer(String^ filePath, String^ fileName)
 		for (; curPackageNumber <= iTotalPackage; curPackageNumber++)
 		{
 			//MessageBox::Show("Pack:" + Convert::ToString(curPackageNumber));
-			Thread::Sleep(200);
+			Thread::Sleep(300);
 			int copyLength = BUFFER_SIZE < sum ? BUFFER_SIZE : (sum % BUFFER_SIZE);
 			sum -= copyLength;
 			array<Byte>^ bData = gcnew array<Byte>(copyLength);
@@ -522,7 +511,7 @@ void AppController::uploadPublicFileToServer(String^ filePath, String^ fileName)
 		AppController::getObject()->requestListPublicFileName();
 		AppController::getObject()->publicFileScreen->resetProcessBar();
 		if (check == buffer->Length)
-			MessageBox::Show("Uploaded " + fileName + "(" + Convert::ToString(check) + ") bytes sucessfully!", "Notification");
+			MessageBox::Show("Uploaded " + fileName + "(" + Convert::ToString(Math::Round(check / 1000000.0, 2)) + " MB) sucessfully!", "Notification");
 
 		delete[] buffer;
 	}

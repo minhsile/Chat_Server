@@ -100,7 +100,7 @@ namespace Server {
 			this->labPortServer->Text = L"Port:";
 			this->txtPortServer->Location = System::Drawing::Point(49, 36);
 			this->txtPortServer->Name = L"txtPortServer";
-			this->txtPortServer->Size = System::Drawing::Size(67, 20);
+			this->txtPortServer->Size = System::Drawing::Size(109, 20);
 			this->txtPortServer->TabIndex = 4;
 			this->btListen->Location = System::Drawing::Point(67, 71);
 			this->btListen->Name = L"btListen";
@@ -114,14 +114,14 @@ namespace Server {
 			this->txtClientChatBox->Name = L"txtClientChatBox";
 			this->txtClientChatBox->ReadOnly = true;
 			this->txtClientChatBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->txtClientChatBox->Size = System::Drawing::Size(267, 187);
+			this->txtClientChatBox->Size = System::Drawing::Size(338, 187);
 			this->txtClientChatBox->TabIndex = 10;
 			this->labConference->AutoSize = true;
-			this->labConference->Location = System::Drawing::Point(268, 17);
+			this->labConference->Location = System::Drawing::Point(260, 17);
 			this->labConference->Name = L"labConference";
-			this->labConference->Size = System::Drawing::Size(61, 13);
+			this->labConference->Size = System::Drawing::Size(82, 13);
 			this->labConference->TabIndex = 6;
-			this->labConference->Text = L"CHAT BOX";
+			this->labConference->Text = L"NOTIFICATION";
 			this->labConnect->AutoSize = true;
 			this->labConnect->Location = System::Drawing::Point(23, 120);
 			this->labConnect->Name = L"labConnect";
@@ -138,7 +138,7 @@ namespace Server {
 			this->backgroundWorker1->DoWork += gcnew System::ComponentModel::DoWorkEventHandler(this, &MainForm::backgroundWorker1_DoWork);
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(441, 240);
+			this->ClientSize = System::Drawing::Size(512, 240);
 			this->Controls->Add(this->btListen);
 			this->Controls->Add(this->txtConnected);
 			this->Controls->Add(this->labConnect);

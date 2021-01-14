@@ -146,7 +146,7 @@ void MainForm::ListenClientMessage(Object^ obj)
 					{
 					//	MessageBox::Show(Convert::ToString(pubFile->iPackageNumber)); //Delete
 						if ((int)ServerController::getObject()->fileStream->Length == pubFile->iFileSize)
-							ServerController::getObject()->mainForm->AddTextToContent(ServerController::getObject()->getUsernameBySocket(socket) + " uploaded " + pubFile->fileName + "(" + Convert::ToString(pubFile->iFileSize) + " bytes) successfully!");
+							ServerController::getObject()->mainForm->AddTextToContent(ServerController::getObject()->getUsernameBySocket(socket) + " uploaded " + pubFile->fileName + "(" + Convert::ToString(Math::Round(pubFile->iFileSize / 1000000.0, 2)) + " MB) successfully!");
 						else
 							ServerController::getObject()->mainForm->AddTextToContent(ServerController::getObject()->getUsernameBySocket(socket) + " uploaded " + pubFile->fileName + "(" + Convert::ToString((int)ServerController::getObject()->fileStream->Length) + " bytes) (missed " + Convert::ToString(pubFile->iFileSize - (int)ServerController::getObject()->fileStream->Length) + "bytes)");
 

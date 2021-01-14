@@ -69,7 +69,7 @@ void ServerController::sendPublicFile(String^ fileName, Socket^ clientSocket)
 	int iTotalPackage = sum / (BUFFER_SIZE + 1) + 1;
 	for (; curPackageNumber <= iTotalPackage; ++curPackageNumber)
 	{
-		Thread::Sleep(200);
+		Thread::Sleep(300);
 		int copyLength = BUFFER_SIZE < sum ? BUFFER_SIZE : (sum % BUFFER_SIZE);
 		sum -= copyLength;
 		pubFile->bData = gcnew array<Byte>(copyLength);
@@ -85,7 +85,7 @@ void ServerController::sendPublicFile(String^ fileName, Socket^ clientSocket)
 
 
 	if (check == buffer->Length)
-		ServerController::getObject()->mainForm->AddTextToContent(getUsernameBySocket(clientSocket) + " downloaded " + pubFile->fileName + "(" + Convert::ToString(check) + ") bytes" + /*" to " + getUsernameBySocket(clientSocket) +*/ " successfully !");
+		ServerController::getObject()->mainForm->AddTextToContent(getUsernameBySocket(clientSocket) + " downloaded " + pubFile->fileName + "(" + Convert::ToString(Math::Round(check / 1000000.0, 2)) + " MB)" + /*" to " + getUsernameBySocket(clientSocket) +*/ " successfully !");
 }
 void ServerController::listFileNameResponse(Socket^ clientSocket)
 {

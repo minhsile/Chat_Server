@@ -57,8 +57,8 @@ namespace Client {
 	private: System::Windows::Forms::TextBox^ DisplayChatBox;
 	private: System::Windows::Forms::Label^ labChatBox;
 
-	private: System::Windows::Forms::TextBox^ textStat;
-	private: System::Windows::Forms::Label^ labStat;
+
+
 	private: System::Windows::Forms::Button^ butFile;
 	private: System::Windows::Forms::TextBox^ txtPath;
 	private: System::Windows::Forms::Label^ labPath;
@@ -86,8 +86,6 @@ namespace Client {
 			this->txtMessage = (gcnew System::Windows::Forms::TextBox());
 			this->DisplayChatBox = (gcnew System::Windows::Forms::TextBox());
 			this->labChatBox = (gcnew System::Windows::Forms::Label());
-			this->textStat = (gcnew System::Windows::Forms::TextBox());
-			this->labStat = (gcnew System::Windows::Forms::Label());
 			this->butFile = (gcnew System::Windows::Forms::Button());
 			this->txtPath = (gcnew System::Windows::Forms::TextBox());
 			this->labPath = (gcnew System::Windows::Forms::Label());
@@ -119,7 +117,7 @@ namespace Client {
 			this->DisplayChatBox->Name = L"DisplayChatBox";
 			this->DisplayChatBox->ReadOnly = true;
 			this->DisplayChatBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->DisplayChatBox->Size = System::Drawing::Size(487, 163);
+			this->DisplayChatBox->Size = System::Drawing::Size(487, 179);
 			this->DisplayChatBox->TabIndex = 6;
 			this->labChatBox->AutoSize = true;
 			this->labChatBox->Location = System::Drawing::Point(12, 9);
@@ -127,17 +125,6 @@ namespace Client {
 			this->labChatBox->Size = System::Drawing::Size(61, 13);
 			this->labChatBox->TabIndex = 5;
 			this->labChatBox->Text = L"CHAT BOX";
-			this->textStat->Location = System::Drawing::Point(395, 199);
-			this->textStat->Name = L"textStat";
-			this->textStat->ReadOnly = true;
-			this->textStat->Size = System::Drawing::Size(107, 20);
-			this->textStat->TabIndex = 19;
-			this->labStat->AutoSize = true;
-			this->labStat->Location = System::Drawing::Point(330, 202);
-			this->labStat->Name = L"labStat";
-			this->labStat->Size = System::Drawing::Size(59, 13);
-			this->labStat->TabIndex = 18;
-			this->labStat->Text = L"File Status:";
 			this->butFile->Location = System::Drawing::Point(352, 225);
 			this->butFile->Name = L"butFile";
 			this->butFile->Size = System::Drawing::Size(150, 39);
@@ -185,8 +172,6 @@ namespace Client {
 			this->Controls->Add(this->labPath);
 			this->Controls->Add(this->txtPath);
 			this->Controls->Add(this->butFile);
-			this->Controls->Add(this->textStat);
-			this->Controls->Add(this->labStat);
 			this->Controls->Add(this->butSend);
 			this->Controls->Add(this->labMessage);
 			this->Controls->Add(this->txtMessage);
